@@ -3,7 +3,6 @@ package com.game;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.engine.DestructableObject;
 
 public class PowerUpHolder
 {
@@ -29,6 +28,14 @@ public class PowerUpHolder
 	public void addPowerUp(PowerUp powerUp)
 	{
 		powerUps.add(powerUp);
+	}
+	
+	public void clean()
+	{
+		for(PowerUp powerUp: powerUps)
+			powerUp.clean();
+		
+		powerUps.clear();
 	}
 	
 	public void removePowerUp(PowerUp powerUp)

@@ -18,20 +18,13 @@ public class PlayerBulletPool
 		gammaBullets.init("gamma.png", "gammabullet", 0);
 	}
 	
-	public void drawObject(int weapon)
+	public void clean()
 	{
-		if(weapon == 0)
-			plasmaBullets.drawObject();
-		else if(weapon == 1)
-			vulcanBullets.drawObject();
-	}
-	
-	public void update(int weapon)
-	{
-		if(weapon == 0)
-			plasmaBullets.update();
-		else if(weapon == 1)
-			vulcanBullets.update();
+		
+		plasmaBullets.clean();
+		vulcanBullets.clean();
+		gammaBullets.clean();
+		
 	}
 	
 	public void clear(int weapon)
@@ -40,6 +33,8 @@ public class PlayerBulletPool
 			plasmaBullets.clear();
 		else if(weapon == 1)
 			vulcanBullets.clear();
+		else
+			gammaBullets.clear();
 	}
 	
 	public BulletPool getBulletPool(int weapon)

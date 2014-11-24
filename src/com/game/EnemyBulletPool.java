@@ -39,4 +39,11 @@ public class EnemyBulletPool
 		return enemyBullets.getPool();
 	}
 
+	public void clean() 
+	{
+		instance = null;
+		enemyBullets.clean();
+		
+	}
+
 }

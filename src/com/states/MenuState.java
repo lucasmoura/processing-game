@@ -8,8 +8,6 @@ import com.engine.Processing;
 import com.engine.TextureManager;
 import com.lonesurvivor.Game;
 
-import android.util.Log;
-
 public class MenuState implements GameState 
 {  
 	  private String menuId = "MENU";
@@ -18,7 +16,6 @@ public class MenuState implements GameState
 	  private Button settingsButton;
 	  private Button tutorialButton;
 	  
-	  private final String LOG_TAG = "MenuState";
 
 	  private ArrayList<GameObject> menuObjects;
 	  

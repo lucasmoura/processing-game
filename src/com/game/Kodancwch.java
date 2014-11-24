@@ -49,7 +49,7 @@ public class Kodancwch extends DestructableObject implements Enemy
 		setCollidable("gammabullet");
 		
 		numberOfTicks = 0;
-		percentFire = 0.1f;
+		percentFire = 0.05f;
 		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
 		
 		points = 20;
@@ -197,10 +197,10 @@ public class Kodancwch extends DestructableObject implements Enemy
 	{
 		int num = new Random().nextInt(100);
 		
-		if(num <= 40)
+		if(num <= 80)
 		{
-			PowerUp p = new PowerUp(getX(), getY(), "powerup.png", "healthup", 0);
-			PowerUpHolder.getInstance().addPowerUp(p);
+			int type = new Random().nextInt(5);
+			PowerUpFactory.getInstance().createPowerUp(type, getX(), getY());	
 		}
 	}
 

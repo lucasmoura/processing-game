@@ -8,6 +8,8 @@ public class AdmiralShip extends DestructableObject
 	private boolean moveRight;
 	private boolean moveLeft;
 	private int speedMovement = 12;
+	private int speedBoost;
+	private int speedBoostCounter;
 	private int width = 1814;
 	private PlayerBulletPool bulletPool;
 	private int counter;
@@ -17,9 +19,9 @@ public class AdmiralShip extends DestructableObject
 	private Explosion explosion;
 	private int weapon;
 	
-	public static int PLASMA_BULLETS = 0;
-	public static int GAMMA_BULLETS = 2;
-	public static int VULCAN_BULLETS = 1;
+	public static int PROTON_WEAPON = 0;
+	public static int GAMMA_WEAPON = 2;
+	public static int VULCAN_WEAPON = 1;
 
 	public AdmiralShip(int x, int y, int objectWidth, int objectHeight,
 			String imagePath, String imageId, int numFrames)
@@ -35,9 +37,14 @@ public class AdmiralShip extends DestructableObject
 		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
 		setCollidable("mediumAsteroid");
 		setCollidable("enemyLaser");
-		setCollidable("healthup");
+		setCollidable("vulcanweapon");
+		setCollidable("protonweapon");
+		setCollidable("gammaweapon");
+		setCollidable("speedboost");
+		setCollidable("healthincrease");
 		
-		weapon = PLASMA_BULLETS;
+		weapon = PROTON_WEAPON;
+		speedBoost = speedBoostCounter = 0;
 	}
 	
 	public void drawObject()
@@ -57,6 +64,7 @@ public class AdmiralShip extends DestructableObject
 	{
 		
 		counter++;
+		speedBoostCounter++;
 		
 		if(explode)
 			return;
@@ -80,7 +88,7 @@ public class AdmiralShip extends DestructableObject
 		{
 			if(position.getX() + speedMovement <= width)
 			{
-				position.setX(position.getX() +speedMovement);
+				position.setX(position.getX() +speedMovement+speedBoost);
 				moveRight = false;
 			}
 				
@@ -90,7 +98,7 @@ public class AdmiralShip extends DestructableObject
 		{
 			if(position.getX() - speedMovement > 0)
 			{
-				position.setX(position.getX() -speedMovement);
+				position.setX(position.getX() -speedMovement - speedBoost);
 				moveLeft = false;
 			}
 		}
@@ -101,6 +109,12 @@ public class AdmiralShip extends DestructableObject
 		{
 			shoot();
 			counter=0;
+		}
+		
+		if(speedBoostCounter >= 300)
+		{
+			speedBoost = 0;
+			speedBoostCounter = 0;
 		}
 		
 		
@@ -118,9 +132,9 @@ public class AdmiralShip extends DestructableObject
 	
 	private void shoot()
 	{
-		if(weapon == PLASMA_BULLETS)
+		if(weapon == PROTON_WEAPON)
 			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 15, 5);
-		else if(weapon == VULCAN_BULLETS)
+		else if(weapon == VULCAN_WEAPON)
 			bulletPool.getBulletPool(weapon).getThreeBullets(getX() +27, getX()+37, getX()+47, getY()-this.getHeight()+30, 15, 3);
 		else
 			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 10, 10);
@@ -165,8 +179,54 @@ public class AdmiralShip extends DestructableObject
 		switch(powerUp.getType())
 		{
 			case 0:
-				health += 20;
+				
+				if(weapon != PROTON_WEAPON)
+					bulletPool.clear(weapon);
+				
+				weapon = PROTON_WEAPON;
+				fireRate = 5;
+				break;
+			
+			case 1:
+				
+				if(weapon != VULCAN_WEAPON)
+					bulletPool.clear(weapon);
+				
+				weapon = VULCAN_WEAPON;
+				fireRate = 3;
+				break;
+				
+			case 2:
+				
+				if(weapon != GAMMA_WEAPON)
+					bulletPool.clear(weapon);
+				
+				weapon = GAMMA_WEAPON;
+				fireRate = 10;
+				break;
+				
+			case 3:
+				health += (health+20>100)?0: 20;
+				break;
+				
+			case 4:
+				
+				if(speedBoost == 0)
+					speedBoost = 3;
+				
+				speedBoostCounter =0;
+				
+				break;
+				
 		}
+	}
+	
+	public void clean()
+	{
+		bulletPool.clean();
+		
+		super.clean();
+		
 	}
 
 }

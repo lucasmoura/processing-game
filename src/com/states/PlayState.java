@@ -6,7 +6,6 @@ import java.util.Iterator;
 import com.engine.Button;
 import com.engine.DestructableObject;
 import com.engine.GameObject;
-import com.engine.GameStateMachine;
 import com.engine.Processing;
 import com.engine.QuadTree;
 import com.game.AdmiralShip;
@@ -130,9 +129,9 @@ public class PlayState implements GameState
 		admiralShip.setX(shipx);
 		admiralShip.setY(shipy);
 		admiralShip.setDamageDealt(1000);
-		admiralShip.setHealth(100);
-		admiralShip.setFireRate(8);
-		admiralShip.setWeapon(AdmiralShip.GAMMA_BULLETS);
+		admiralShip.setHealth(10);
+		admiralShip.setFireRate(5);
+		admiralShip.setWeapon(AdmiralShip.PROTON_WEAPON);
 		
 		playHUD = new PlayHUD();
 		playHUD.init();
@@ -154,6 +153,12 @@ public class PlayState implements GameState
 		
 		for(DestructableObject enemy : enemies)
 			enemy.clean();
+	
+		PowerUpHolder.getInstance().clean();
+		EnemyBulletPool.getInstance().clean();
+		
+		for(GameObject object: playObjects)
+			object.clean();
 		
 		admiralShip.clean();
 		
@@ -245,8 +250,6 @@ public class PlayState implements GameState
 	{
 		 if(leftButton.touchOnMe(x, y))
 		 {
-			 //System.out.println("Left pressed");
-			 
 				if (leftButton.isPressed()==false) 
 				{
 				  leftButton.setPressed(true);
@@ -261,19 +264,14 @@ public class PlayState implements GameState
 		
 		 if(rightButton.touchOnMe(x, y))
 		 {
-			 //System.out.println("Right pressed");
-			 
 				if (rightButton.isPressed()==false) 
 				{
 				  rightButton.setPressed(true);
 				  leftButton.setPressed(false);
 				}
-			
 		 }
 		 else
-		 {
 			 rightButton.setPressed(false);
-		 }
 	
 	}
 

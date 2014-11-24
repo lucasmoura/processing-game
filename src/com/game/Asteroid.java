@@ -45,10 +45,7 @@ public class Asteroid extends DestructableObject implements Enemy
 		PApplet applet = Processing.getInstance().getParent();
 		
 		if ( position.getY() > applet.displayHeight)
-		{
-			position.setX((int)applet.random(applet.displayWidth - objectWidth));
-			position.setY(0);
-		}
+			alive = false;
 		
 		int interval = 40;
 		currentRow = (applet.millis()/interval)%numFrames;
@@ -77,6 +74,7 @@ public class Asteroid extends DestructableObject implements Enemy
 			
 			if(health <= 0)
 			{
+				dropPowerUp();
 				explode = true;
 				damageDealt = 0;
 				return;
@@ -113,6 +111,17 @@ public class Asteroid extends DestructableObject implements Enemy
 		}	
 		else
 			alive = false;
+	}
+	
+	private void dropPowerUp()
+	{
+		int num = new Random().nextInt(100);
+		
+		if(num <= 80)
+		{
+			int type = 4;
+			PowerUpFactory.getInstance().createPowerUp(type, getX(), getY());	
+		}
 	}
 
 }
