@@ -133,11 +133,11 @@ public class AdmiralShip extends DestructableObject
 	private void shoot()
 	{
 		if(weapon == PROTON_WEAPON)
-			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 15, 5);
+			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 15, 10);
 		else if(weapon == VULCAN_WEAPON)
-			bulletPool.getBulletPool(weapon).getThreeBullets(getX() +27, getX()+37, getX()+47, getY()-this.getHeight()+30, 15, 3);
+			bulletPool.getBulletPool(weapon).getThreeBullets(getX() +27, getX()+37, getX()+47, getY()-this.getHeight()+30, 15, 5);
 		else
-			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 10, 10);
+			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 10, 15);
 	}
 
 	public BulletPool getBulletPool()

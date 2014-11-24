@@ -1,10 +1,6 @@
 package com.engine;
 
 
-import java.util.ArrayList;
-
-import android.util.Log;
-
 public abstract class GameObject
 {
     protected Vector2D position;

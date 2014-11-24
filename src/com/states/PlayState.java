@@ -234,7 +234,9 @@ public class PlayState implements GameState
 	
 	private void gameOver()
 	{
-		Game.getInstance().getStateMachine().changeState(new GameOverState());
+		GameState gameOver = new GameOverState();
+		((GameOverState) gameOver).setScore(playHUD.getScore());
+		Game.getInstance().getStateMachine().changeState(gameOver);
 	}
 
 	

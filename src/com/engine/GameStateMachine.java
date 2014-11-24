@@ -4,13 +4,11 @@ import java.util.ArrayList;
 
 import com.states.GameState;
 
-import android.util.Log;
 
 public class GameStateMachine
 {
   
   private ArrayList<GameState> gameStates;
-  private final String LOG_TAG = "GameStateMachine";
   
   public GameStateMachine()
   {

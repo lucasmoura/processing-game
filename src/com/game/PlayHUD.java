@@ -66,5 +66,10 @@ public class PlayHUD
 		TextureManager.getInstance().clearFromTextureMap(healthIcon);
 		TextureManager.getInstance().clearFromTextureMap(scoreIcon);
 	}
+	
+	public long getScore()
+	{
+		return score;
+	}
 
 }
