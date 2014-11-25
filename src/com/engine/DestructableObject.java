@@ -12,6 +12,7 @@ public abstract class DestructableObject extends GameObject
     private ArrayList<String> collidableWith;
     protected boolean isColliding;
     protected int points;
+    protected int speed;
 
 	public DestructableObject(int x, int y, int objectWidth, int objectHeight,
 			String imagePath, String imageId, int numFrames) 
@@ -99,6 +100,9 @@ public abstract class DestructableObject extends GameObject
 		collidableWith.add(object);
 	}
 	
-	
+	public void setSpeed(int speed)
+	{
+		this.speed = speed;
+	}
 	
 }

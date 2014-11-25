@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import com.engine.DestructableObject;
 import com.engine.Processing;
 
-public class Kodancwch extends DestructableObject implements Enemy 
+public class BasicEnemy extends DestructableObject implements Enemy 
 {
 
 	private boolean reachedPosition;
@@ -16,17 +16,17 @@ public class Kodancwch extends DestructableObject implements Enemy
 	private int[] possibleFixedPositions;
 	private int numberOfTicks;
 	private int stopPosition;
-	private int speed = 10;
 	private boolean startPosition;
 	private boolean startRight;
 	private boolean explode;
 	private Explosion explosion;
 	private double fireChance;
 	private double percentFire;
+	private boolean bulletType;
 	
 	private final int NUMBER_OF_FIXED_POSITIONS = 3;
 	
-	public Kodancwch(int x, int y, int objectWidth, int objectHeight,
+	public BasicEnemy(int x, int y, int objectWidth, int objectHeight,
 			String imagePath, String imageId, int numFrames)
 	{
 		super(x, y, objectWidth, objectHeight, imagePath, imageId, numFrames);
@@ -77,7 +77,7 @@ public class Kodancwch extends DestructableObject implements Enemy
 	@Override
 	public void shoot() 
 	{
-		EnemyBulletPool.getInstance().getBullet(getX()+37, getY()+this.getHeight()+30, 15, 10);
+		EnemyBulletPool.getInstance().getBullet(bulletType, getX()+37, getY()+this.getHeight()+30, 15, 10);	
 	}
 
 	@Override
@@ -204,4 +204,8 @@ public class Kodancwch extends DestructableObject implements Enemy
 		}
 	}
 
+	public void setBulletType(boolean bulletType)
+	{
+		this.bulletType = bulletType;
+	}
 }

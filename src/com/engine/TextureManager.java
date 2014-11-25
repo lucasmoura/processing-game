@@ -12,7 +12,6 @@ public class TextureManager
 	  private HashMap<String, Integer> textureCount;
 	  private PApplet parent;
 	  
-	  private final String LOG_TAG = "TextureManager";
 	  
 	  private TextureManager()
 	  {

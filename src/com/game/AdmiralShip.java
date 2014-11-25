@@ -42,6 +42,7 @@ public class AdmiralShip extends DestructableObject
 		setCollidable("gammaweapon");
 		setCollidable("speedboost");
 		setCollidable("healthincrease");
+		setCollidable("redLaser");
 		
 		weapon = PROTON_WEAPON;
 		speedBoost = speedBoostCounter = 0;

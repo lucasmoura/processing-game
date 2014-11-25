@@ -33,6 +33,9 @@ public class EnemyFactory
 			case Enemy.KODANCWCH:
 				return createKodancwch();
 				
+			case Enemy.KODANCYFLYM:
+				return createKodancyflym();
+				
 			default:
 				return null;
 		}
@@ -40,11 +43,12 @@ public class EnemyFactory
 	
 	private DestructableObject createAsteroid()
 	{
-		DestructableObject asteroid = new Asteroid(0, 0, 0, 0, "asteroidsMedium.png",
+		DestructableObject asteroid = new Asteroid(0, 0, 0, 0, "enemies/asteroidsMedium.png",
 				"mediumAsteroid", 16);
 		
 		asteroid.setDamageDealt(30);
 		asteroid.setHealth(30);
+		asteroid.setSpeed(8);
 		
 		int width = Processing.getInstance().getParent().width;
 		
@@ -57,28 +61,53 @@ public class EnemyFactory
 	
 	private DestructableObject createKodancwch()
 	{
-		DestructableObject kodancwch = new Kodancwch(0, 0, 0, 0,
+		DestructableObject kodancwch = new BasicEnemy(0, 0, 0, 0,
 				"enemyBlack1.png", "kodancwch", 1);
 		
-		kodancwch.setDamageDealt(0);
-		kodancwch.setHealth(40);
+		createBasicEnemy(kodancwch, 40, 8, false);
 		
-		int kodancwchx = -1;
+		return kodancwch;
+		
+	}
+	
+	private DestructableObject createKodanruthr()
+	{
+		return null;
+	}
+	
+	private DestructableObject createKodancyflym()
+	{
+		DestructableObject kodancyflym = new BasicEnemy(0, 0, 0, 0,
+				"enemies/kodancyflym.png", "kodancyflym", 1);
+		
+		createBasicEnemy(kodancyflym, 50, 12, true);
+		
+		return kodancyflym;
+		
+	}
+	
+	private void createBasicEnemy(DestructableObject enemy, int health, int speed, boolean bulletType)
+	{
+		enemy.setDamageDealt(0);
+		enemy.setHealth(health);
+		enemy.setSpeed(speed);
+		
+		((BasicEnemy) enemy).setBulletType(bulletType);
+		
+		int enemyx = -1;
 				
 		if(new Random().nextInt(2)==0)
 		{
-			kodancwchx = 0;
-			((Kodancwch) kodancwch).setStart(true);
+			enemyx = 0;
+			((BasicEnemy) enemy).setStart(true);
 		}	
 		else
 		{
-			kodancwchx = Processing.getInstance().getParent().width - kodancwch.getWidth();
-			((Kodancwch) kodancwch).setStart(false);
+			enemyx = Processing.getInstance().getParent().width - enemy.getWidth();
+			((BasicEnemy) enemy).setStart(false);
 		}	
 		
-		kodancwch.setX(kodancwchx);
-		return kodancwch;
-		
+		enemy.setX(enemyx);
 	}
 
 }

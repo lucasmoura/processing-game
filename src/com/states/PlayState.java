@@ -19,6 +19,7 @@ import com.game.PlayHUD;
 import com.lonesurvivor.Game;
 
 import processing.core.PApplet;
+import processing.core.PFont;
 
 public class PlayState implements GameState
 {
@@ -33,6 +34,11 @@ public class PlayState implements GameState
 	private AdmiralShip admiralShip;
 	private QuadTree quadTree;
 	private PlayHUD playHUD;
+	private PFont powerUpTitle;
+	private boolean displayPowerUpText;
+	private String powerUpText;
+	private PApplet applet;
+	private int powerUpTextCounter;
 
 	@Override
 	public void update() 
@@ -58,6 +64,17 @@ public class PlayState implements GameState
 		    } 
 		    else
 		    	object.update();
+		}
+		
+		if(displayPowerUpText)
+		{
+			if(powerUpTextCounter>=50)
+			{
+				displayPowerUpText = false;
+				powerUpTextCounter = 0;
+			}
+			else
+				powerUpTextCounter++;
 		}
 		
 		starfield.update();
@@ -90,26 +107,34 @@ public class PlayState implements GameState
 		for(GameObject object: playObjects)
 			object.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool())
+		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(false))
+			bullet.drawObject();
+		
+		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(true))
 			bullet.drawObject();
 
 		PowerUpHolder.getInstance().drawObject();
 		playHUD.drawObject();
+		
+		if(displayPowerUpText)
+		{
+			applet.textFont(powerUpTitle, 70);
+			applet.fill(255);
+			applet.text(String.valueOf(powerUpText), applet.width - 680,
+					applet.height - rightButton.getHeight() - 30);
+		}
 		
 	}
 
 	@Override
 	public boolean onEnter() 
 	{
-		PApplet applet = Processing.getInstance().getParent();
+		applet = Processing.getInstance().getParent();
 		playObjects = new ArrayList<GameObject>();
 		enemies = new ArrayList<DestructableObject>();
 		spawn = new EnemySpawn();
 		
-		//GameObject kodan = EnemyFactory.getInstance().createEnemy(Enemy.KODANCWCH);
-		
 		starfield = new Starfield(20);
-		//System.out.println("Starfield ready");
 		rightButton = new Button(0, 0, "rightMove.png", "rightMove", 1, false);
 		int rightx = applet.width - rightButton.getWidth();
 		int righty = applet.height - rightButton.getHeight();
@@ -133,6 +158,10 @@ public class PlayState implements GameState
 		admiralShip.setFireRate(5);
 		admiralShip.setWeapon(AdmiralShip.PROTON_WEAPON);
 		
+		displayPowerUpText = false;
+		powerUpTitle = applet.createFont("Arial", 12, false);
+		powerUpTextCounter = 0;
+		
 		playHUD = new PlayHUD();
 		playHUD.init();
 		
@@ -140,7 +169,6 @@ public class PlayState implements GameState
 		
 		playObjects.add(leftButton);
 		playObjects.add(rightButton);
-		//enemies.add(kodan);
 		
 		return true;
 	}
@@ -189,6 +217,7 @@ public class PlayState implements GameState
 					{
 						if(collision.get(y) instanceof PowerUp)
 						{
+							setPowerUpText(((PowerUp) collision.get(y)).getType());
 							admiralShip.getPowerUp((PowerUp) collision.get(y));
 							PowerUpHolder.getInstance().removePowerUp((PowerUp) collision.get(y));
 						}	
@@ -210,7 +239,8 @@ public class PlayState implements GameState
 		quadTree.insert(admiralShip);
 		
 		ArrayList<DestructableObject> bullets = admiralShip.getBulletPool().getPool();
-		bullets.addAll(EnemyBulletPool.getInstance().getPool());
+		bullets.addAll(EnemyBulletPool.getInstance().getPool(false));
+		bullets.addAll(EnemyBulletPool.getInstance().getPool(true));
 		
 		bullets.addAll(PowerUpHolder.getInstance().getActivePowerUps());
 		
@@ -230,6 +260,36 @@ public class PlayState implements GameState
 	public void disable() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void setPowerUpText(int type)
+	{
+		displayPowerUpText = true;
+		powerUpTextCounter = 0;
+		
+		switch(type)
+		{
+			case 0:
+				powerUpText = "PROTON WEAPON !!!";
+				break;
+			
+			case 1:
+				powerUpText = "VULCAN WEAPON !!!";
+				break;
+				
+			case 2:
+				powerUpText = "GAMMA WEAPON !!!";
+				break;
+			
+			case 3:
+				powerUpText = "HEALTH BOOST !!!";
+				break;
+			
+			case 4:
+				powerUpText = "SPEED BOOST !!!";
+				break;
+				
+		}
 	}
 	
 	private void gameOver()

@@ -10,7 +10,6 @@ import processing.core.PApplet;
 public class Asteroid extends DestructableObject implements Enemy
 {
 	
-	private int speed;
 	private boolean alive;
 	private boolean explode;
 	private Explosion explosion;
@@ -31,7 +30,6 @@ public class Asteroid extends DestructableObject implements Enemy
 		setCollidable("laser");
 		setCollidable("vulcanbullet");
 		setCollidable("gammabullet");
-		speed = 8;
 		alive = true;
 		explode = false;
 		

@@ -136,7 +136,5 @@ public class GameOverState implements GameState
 	{
 		this.score = score;
 	}
-	
-	
 
 }
