@@ -36,6 +36,9 @@ public class EnemyFactory
 			case Enemy.KODANCYFLYM:
 				return createKodancyflym();
 				
+			case Enemy.KODANRUTHR:
+				return createKodanruthr();
+				
 			default:
 				return null;
 		}
@@ -53,7 +56,7 @@ public class EnemyFactory
 		int width = Processing.getInstance().getParent().width;
 		
 		Random rand = new Random();
-		int asteroidx = rand.nextInt(width);
+		int asteroidx = rand.nextInt(width - asteroid.getWidth());
 		
 		asteroid.setX(asteroidx);
 		return asteroid;
@@ -72,7 +75,29 @@ public class EnemyFactory
 	
 	private DestructableObject createKodanruthr()
 	{
-		return null;
+		DestructableObject kodanruthr = new Kodanruthr(0, 0,
+					"enemies/kodanruthr.png", "kodanruthr", 1);
+		
+		kodanruthr.setDamageDealt(0);
+		kodanruthr.setHealth(30);
+		kodanruthr.setSpeed(30);
+		
+		int enemyx = -1;
+		
+		if(new Random().nextInt(2)==0)
+		{
+			enemyx = 0;
+			((Kodanruthr) kodanruthr).setStart(true);
+		}	
+		else
+		{
+			enemyx = Processing.getInstance().getParent().width - kodanruthr.getWidth();
+			((Kodanruthr) kodanruthr).setStart(false);
+		}	
+		
+		kodanruthr.setX(enemyx);
+		
+		return kodanruthr;
 	}
 	
 	private DestructableObject createKodancyflym()

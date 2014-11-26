@@ -1,8 +1,11 @@
 package com.engine;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import com.game.AdmiralShip;
+import com.game.Bullet;
 
 //http://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
 
@@ -44,8 +47,8 @@ public class QuadTree
 	private int getIndex(GameObject object) 
 	{
 		   int index = -1;
-		   double verticalMidpoint = this.x + (this.width/ 2);
-		   double horizontalMidpoint = this.y + (this.height / 2);
+		   double verticalMidpoint = this.x + ((double)this.width/2.0);
+		   double horizontalMidpoint = this.y + ((double)this.height / 2.0);
 		 
 		   // Object can completely fit within the top quadrants
 		   boolean topQuadrant = (object.getY() < horizontalMidpoint &&
@@ -54,7 +57,7 @@ public class QuadTree
 		   boolean bottomQuadrant = (object.getY() > horizontalMidpoint);
 		 
 		   // Object can completely fit within the left quadrants
-		   if (x < verticalMidpoint && object.getX() + object.getWidth() < verticalMidpoint)
+		   if (object.getX()< verticalMidpoint && object.getX() + object.getWidth() < verticalMidpoint)
 		   {
 		      if (topQuadrant) 
 		        index = 1;
@@ -70,6 +73,11 @@ public class QuadTree
 		       index = 3;
 		     
 		   }
+		    else
+		    {
+		    	if(object instanceof AdmiralShip && nodes[0] != null)
+		    		index = 3;
+		    }
 		 
 		   return index;
 	}
@@ -96,22 +104,34 @@ public class QuadTree
 		      if (nodes[0] == null)
 		         split();
 		 
-		     int i = 0;
-		     while (i < objects.size())
-		     {
-		       int index = getIndex(objects.get(i));
-		       
-		       if (index != -1)
-		       {
-		    	   
-		    	   nodes[index].insert(objects.get(i));
-		    	   objects.remove(i);
-		    	}
-		    	else {
-		    	   i++;
-		    	}
-		       
-		     }
+//		     int i = 0;
+//		     while (i < objects.size())
+//		     {
+//		       int index = getIndex(objects.get(i));
+//		       
+//		       if (index != -1)
+//		       {
+//		    	   
+//		    	   nodes[index].insert(objects.get(i));
+//		    	   objects.remove(i);
+//		    	}
+//		    	else 
+//		    	   i++;
+//		       
+//		     }
+		     
+		    for (Iterator<DestructableObject> iterator = objects.iterator(); iterator.hasNext();)
+			{
+		    		DestructableObject o = iterator.next();
+					int index = getIndex(o);
+					
+				    if(index != -1)
+				    {
+				    	nodes[index].insert(o);
+				    	iterator.remove();
+				    }
+			}
+		    
 		   }
 		   
 	}
@@ -120,13 +140,14 @@ public class QuadTree
 			 											DestructableObject object) 
 	 {
 		   int index = getIndex(object);
+		 		
 		   
 		   if (index != -1 && nodes[0] != null) 
 		     nodes[index].retrieve(returnObjects, object);
 		   
 		 
 		   returnObjects.addAll(objects);
-		 
+		   
 		   return returnObjects;
 	 }
 	 

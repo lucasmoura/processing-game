@@ -88,9 +88,10 @@ public abstract class DestructableObject extends GameObject
 	{
 		for(int i =0; i<collidableWith.size(); i++)
 		{
-			if(object.getImageId() == collidableWith.get(i))
+			if(object.getImageId().equals(collidableWith.get(i)))
 				return true;
 		}
+		
 		
 		return false;
 	}

@@ -9,7 +9,9 @@ import com.engine.GameObject;
 import com.engine.Processing;
 import com.engine.QuadTree;
 import com.game.AdmiralShip;
+import com.game.Bullet;
 import com.game.EnemyBulletPool;
+import com.game.EnemyFactory;
 import com.game.EnemySpawn;
 import com.game.PowerUp;
 import com.game.PowerUpHolder;
@@ -154,7 +156,7 @@ public class PlayState implements GameState
 		admiralShip.setX(shipx);
 		admiralShip.setY(shipy);
 		admiralShip.setDamageDealt(1000);
-		admiralShip.setHealth(10);
+		admiralShip.setHealth(100);
 		admiralShip.setFireRate(5);
 		admiralShip.setWeapon(AdmiralShip.PROTON_WEAPON);
 		
@@ -167,6 +169,9 @@ public class PlayState implements GameState
 		
 		quadTree = new QuadTree(0, 0, 0, applet.width, applet.height);
 		
+//		enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANRUTHR));
+//		enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANCWCH));
+//		
 		playObjects.add(leftButton);
 		playObjects.add(rightButton);
 		
@@ -205,11 +210,13 @@ public class PlayState implements GameState
 		{
 			collision.clear();
 			quadTree.retrieve(collision, objects.get(x));
+		
+				
 			
 			for (int y = 0, length = collision.size(); y < length; y++)
 			{
-
-				if ( objects.get(x).isCollidableWith(collision.get(y)) &&
+				
+					if ( objects.get(x).isCollidableWith(collision.get(y)) &&
 						objects.get(x).getX() < collision.get(y).getX() + collision.get(y).getWidth() &&
 					     objects.get(x).getX() + objects.get(x).getWidth()  > collision.get(y).getX() &&
 					     objects.get(x).getY() < collision.get(y).getY() + collision.get(y).getHeight() &&

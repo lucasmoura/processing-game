@@ -108,7 +108,7 @@ public class AdmiralShip extends DestructableObject
 		
 		if(counter>=fireRate)
 		{
-			shoot();
+			//shoot();
 			counter=0;
 		}
 		

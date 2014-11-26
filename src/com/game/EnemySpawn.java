@@ -12,6 +12,7 @@ public class EnemySpawn
 	private float asteroidSpawnChance;
 	private float kodancwchSpawnChance;
 	private float kodancyflymSpawnChance;
+	private float kodanruthrSpawnChance;
 	private ArrayList<DestructableObject> enemies;
 	private Random rand;
 	
@@ -21,6 +22,7 @@ public class EnemySpawn
 		asteroidSpawnChance = 80;
 		kodancwchSpawnChance = 130;
 		kodancyflymSpawnChance = 190;
+		kodanruthrSpawnChance = 30;
 		enemies = new ArrayList<DestructableObject>();
 		rand = new Random();
 	}
@@ -50,6 +52,11 @@ public class EnemySpawn
 	            	enemies.add(EnemyFactory.
 	            			getInstance().createEnemy(Enemy.KODANCYFLYM));
 	            }
+	            if (rand.nextInt((int) kodanruthrSpawnChance) == 0)
+	            {
+	            	enemies.add(EnemyFactory.
+	            			getInstance().createEnemy(Enemy.KODANRUTHR));
+	            }
 	            
 	        }
 	        //increase Spawn Time
@@ -61,6 +68,9 @@ public class EnemySpawn
 	        
 	        if(kodancwchSpawnChance >= 1.1f)
 	        	kodancwchSpawnChance -= 0.0095;
+	        
+	        if(kodanruthrSpawnChance>= 1.1f)
+	        	kodanruthrSpawnChance -= 0.0095;
 	    }
 		
 		return enemies;

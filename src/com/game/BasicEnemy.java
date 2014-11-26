@@ -116,10 +116,7 @@ public class BasicEnemy extends DestructableObject implements Enemy
 	
 	public void setStart(boolean start)
 	{
-		if(start)
-			startRight = true;
-		else
-			startRight = false;
+		startRight = start;
 	}
 	
 	private void reachDestination()
