@@ -10,9 +10,10 @@ import com.engine.Processing;
 import com.engine.QuadTree;
 import com.game.AdmiralShip;
 import com.game.Bullet;
-import com.game.EnemyBulletPool;
+import com.game.EnemyBulletControl;
 import com.game.EnemyFactory;
 import com.game.EnemySpawn;
+import com.game.Kodanswyn;
 import com.game.PowerUp;
 import com.game.PowerUpHolder;
 import com.game.Starfield;
@@ -30,6 +31,7 @@ public class PlayState implements GameState
 	private ArrayList<GameObject> playObjects;
 	private ArrayList<DestructableObject> enemies;
 	private EnemySpawn spawn;
+	private boolean kodanswynStatus;
 	private final String playID = "PLAY";
 	private Button leftButton; 
 	private Button rightButton;
@@ -46,8 +48,8 @@ public class PlayState implements GameState
 	public void update() 
 	{
 		
-		EnemyBulletPool.getInstance().setPlayerx(admiralShip.getX());
-		EnemyBulletPool.getInstance().setPlayery(admiralShip.getY());
+		EnemyBulletControl.getInstance().setPlayerx(admiralShip.getX());
+		EnemyBulletControl.getInstance().setPlayery(admiralShip.getY());
 		
 		if(!admiralShip.isAlive())
 		{
@@ -62,8 +64,25 @@ public class PlayState implements GameState
 		{
 			DestructableObject object = iterator.next();
 			
+			if(object instanceof Kodanswyn)
+			{
+				if(((Kodanswyn) object).checkGravitationalForce())
+					admiralShip.setGravitationalMovement(((Kodanswyn) object).getGravitationalFieldPower());
+				
+				kodanswynStatus = true;
+			}
+			
 		    if (!((Enemy) object).isAlive())
 		    {
+		    	
+		    	if(object instanceof Kodanswyn)
+				{
+					if(!((Kodanswyn) object).checkGravitationalForce())
+						admiralShip.setGravitationalMovement(0);
+					
+					kodanswynStatus = false;
+				}
+		    	
 		    	score += object.getPoints();
 		        iterator.remove();
 		    } 
@@ -84,14 +103,14 @@ public class PlayState implements GameState
 		
 		starfield.update();
 		
-		enemies.addAll(spawn.spawn(enemies.size()));
+		enemies.addAll(spawn.spawn(enemies.size(), kodanswynStatus));
 		
 		if(rightButton.isPressed())
 			admiralShip.moveRight();
 		else if(leftButton.isPressed())
 			admiralShip.moveLeft();
 		
-		EnemyBulletPool.getInstance().update();
+		EnemyBulletControl.getInstance().update();
 		admiralShip.update();
 		playHUD.update(admiralShip.getHealth(), score);
 		
@@ -112,13 +131,13 @@ public class PlayState implements GameState
 		for(GameObject object: playObjects)
 			object.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(0))
+		for(DestructableObject bullet: EnemyBulletControl.getInstance().getPool(0))
 			bullet.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(1))
+		for(DestructableObject bullet: EnemyBulletControl.getInstance().getPool(1))
 			bullet.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(2))
+		for(DestructableObject bullet: EnemyBulletControl.getInstance().getPool(2))
 			bullet.drawObject();
 
 		PowerUpHolder.getInstance().drawObject();
@@ -141,6 +160,8 @@ public class PlayState implements GameState
 		playObjects = new ArrayList<GameObject>();
 		enemies = new ArrayList<DestructableObject>();
 		spawn = new EnemySpawn();
+		
+		kodanswynStatus = false;
 		
 		starfield = new Starfield(20);
 		rightButton = new Button(0, 0, "rightMove.png", "rightMove", 1, false);
@@ -175,8 +196,8 @@ public class PlayState implements GameState
 		
 		quadTree = new QuadTree(0, 0, 0, applet.width, applet.height);
 		
-//		enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANRUTHR));
-//		enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANTRWM));
+		//enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANRUTHR));
+		//enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANSWYN));
 		
 		playObjects.add(leftButton);
 		playObjects.add(rightButton);
@@ -194,7 +215,7 @@ public class PlayState implements GameState
 			enemy.clean();
 	
 		PowerUpHolder.getInstance().clean();
-		EnemyBulletPool.getInstance().clean();
+		EnemyBulletControl.getInstance().clean();
 		
 		for(GameObject object: playObjects)
 			object.clean();
@@ -252,9 +273,9 @@ public class PlayState implements GameState
 		quadTree.insert(admiralShip);
 		
 		ArrayList<DestructableObject> bullets = admiralShip.getBulletPool().getPool();
-		bullets.addAll(EnemyBulletPool.getInstance().getPool(0));
-		bullets.addAll(EnemyBulletPool.getInstance().getPool(1));
-		bullets.addAll(EnemyBulletPool.getInstance().getPool(2));
+		bullets.addAll(EnemyBulletControl.getInstance().getPool(0));
+		bullets.addAll(EnemyBulletControl.getInstance().getPool(1));
+		bullets.addAll(EnemyBulletControl.getInstance().getPool(2));
 		
 		bullets.addAll(PowerUpHolder.getInstance().getActivePowerUps());
 		

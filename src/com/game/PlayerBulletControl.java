@@ -1,13 +1,13 @@
 package com.game;
 
-public class PlayerBulletPool 
+public class PlayerBulletControl 
 {
 	
 	private BulletPool plasmaBullets;
 	private BulletPool vulcanBullets;
 	private BulletPool gammaBullets;
 	
-	public PlayerBulletPool()
+	public PlayerBulletControl()
 	{
 		plasmaBullets = new BulletPool(30);
 		vulcanBullets = new BulletPool(90);

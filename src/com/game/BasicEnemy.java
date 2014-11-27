@@ -10,15 +10,15 @@ import com.engine.Processing;
 public class BasicEnemy extends DestructableObject implements Enemy 
 {
 
-	private boolean reachedPosition;
+	protected boolean reachedPosition;
 	private boolean alive;
 	private int width;
 	private int[] possibleFixedPositions;
 	private int numberOfTicks;
 	protected int stopPosition;
 	private boolean startPosition;
-	private boolean startRight;
-	private boolean explode;
+	protected boolean startRight;
+	protected boolean explode;
 	private Explosion explosion;
 	private double fireChance;
 	private double percentFire;
@@ -83,7 +83,7 @@ public class BasicEnemy extends DestructableObject implements Enemy
 	@Override
 	public void shoot() 
 	{
-		EnemyBulletPool.getInstance().getBullet(bulletType, getX()+37, getY()+this.getHeight()+30, 15, 10);	
+		EnemyBulletControl.getInstance().getBullet(bulletType, getX()+37, getY()+this.getHeight()+30, 15, 10);	
 	}
 
 	@Override

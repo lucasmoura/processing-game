@@ -11,13 +11,14 @@ public class AdmiralShip extends DestructableObject
 	private int speedBoost;
 	private int speedBoostCounter;
 	private int width = 1814;
-	private PlayerBulletPool bulletPool;
+	private PlayerBulletControl bulletPool;
 	private int counter;
 	private int fireRate;
 	private boolean alive;
 	private boolean explode;
 	private Explosion explosion;
 	private int weapon;
+	private int gravitationalMovement;
 	
 	public static int PROTON_WEAPON = 0;
 	public static int GAMMA_WEAPON = 2;
@@ -31,7 +32,8 @@ public class AdmiralShip extends DestructableObject
 		moveLeft = moveRight = explode = false;
 		fireRate =3;
 		counter = fireRate;
-		bulletPool = new PlayerBulletPool();
+		bulletPool = new PlayerBulletControl();
+		gravitationalMovement = 0;
 		
 		alive = true;
 		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
@@ -100,9 +102,20 @@ public class AdmiralShip extends DestructableObject
 		{
 			if(position.getX() - speedMovement > 0)
 			{
-				position.setX(position.getX() -speedMovement - speedBoost);
+				position.setX(position.getX() -speedMovement - speedBoost + gravitationalMovement);
 				moveLeft = false;
 			}
+		}
+		
+		if(gravitationalMovement>0)
+		{
+			if(position.getX()+gravitationalMovement <= width)
+				position.setX(position.getX() + gravitationalMovement);
+		}
+		else
+		{
+			if(position.getX() + gravitationalMovement > 0)
+				position.setX(position.getX() + gravitationalMovement);
 		}
 		
 		bulletPool.getBulletPool(weapon).update();
@@ -175,6 +188,11 @@ public class AdmiralShip extends DestructableObject
 	public void setFireRate(int fireRate) 
 	{
 		this.fireRate = fireRate;
+	}
+	
+	public void setGravitationalMovement(int gravitationalMovement)
+	{
+		this.gravitationalMovement = gravitationalMovement;
 	}
 
 	public void getPowerUp(PowerUp powerUp) 

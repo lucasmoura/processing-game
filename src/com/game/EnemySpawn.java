@@ -14,6 +14,7 @@ public class EnemySpawn
 	private float kodancyflymSpawnChance;
 	private float kodanruthrSpawnChance;
 	private float kodantrwmSpawnChance;
+	private float kodanswynSpawnChance;
 	private ArrayList<DestructableObject> enemies;
 	private Random rand;
 	
@@ -25,11 +26,12 @@ public class EnemySpawn
 		kodancyflymSpawnChance = 190;
 		kodanruthrSpawnChance = 270;
 		kodantrwmSpawnChance = 400;
+		kodanswynSpawnChance = 600;
 		enemies = new ArrayList<DestructableObject>();
 		rand = new Random();
 	}
 	
-	public ArrayList<DestructableObject> spawn(int numEnemies)
+	public ArrayList<DestructableObject> spawn(int numEnemies, boolean kodanswynStatus)
 	{
 		enemies.clear();
 		
@@ -64,6 +66,11 @@ public class EnemySpawn
 	            	enemies.add(EnemyFactory.
 	            			getInstance().createEnemy(Enemy.KODANTRWM));
 	            }
+	            if (!kodanswynStatus && rand.nextInt((int) kodanswynSpawnChance) == 0)
+	            {
+	            	enemies.add(EnemyFactory.
+	            			getInstance().createEnemy(Enemy.KODANSWYN));
+	            }
 	            
 	        }
 	        //increase Spawn Time
@@ -80,7 +87,10 @@ public class EnemySpawn
 	        	kodanruthrSpawnChance -= 0.0095;
 	        
 	        if(kodantrwmSpawnChance>= 1.1f)
-	        	kodanruthrSpawnChance -= 0.0095;
+	        	kodanruthrSpawnChance -= 0.002;
+	        
+	        if(kodanswynSpawnChance>= 1.1f)
+	        	kodanswynSpawnChance -= 0.003;
 	    }
 		
 		return enemies;

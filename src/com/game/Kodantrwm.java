@@ -30,10 +30,10 @@ public class Kodantrwm extends BasicEnemy
 	public void shoot()
 	{
 		if(weaponType)
-			EnemyBulletPool.getInstance().getChargeShoot(getX()+90, getY()+this.getHeight()-10,
+			EnemyBulletControl.getInstance().getChargeShoot(getX()+90, getY()+this.getHeight()-10,
 					15, 10);
 		else
-			EnemyBulletPool.getInstance().getThreeBullets(true, getX() +70, getX() + 90,
+			EnemyBulletControl.getInstance().getThreeBullets(true, getX() +70, getX() + 90,
 						getX()+110, getY()+this.getHeight()-10, 30, 3, 40);
 		
 	}

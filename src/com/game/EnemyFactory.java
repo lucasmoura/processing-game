@@ -41,6 +41,9 @@ public class EnemyFactory
 				
 			case Enemy.KODANTRWM:
 				return createKodantrwm();
+			
+			case Enemy.KODANSWYN:
+				return createKodanswyn();
 				
 			default:
 				return null;
@@ -70,7 +73,7 @@ public class EnemyFactory
 		DestructableObject kodancwch = new BasicEnemy(0, 0, 0, 0,
 				"enemyBlack1.png", "kodancwch", 1);
 		
-		createBasicEnemy(kodancwch, 20, 8);
+		createBasicEnemy(kodancwch, 10, 8);
 		
 		((BasicEnemy) kodancwch).setBulletType(false);
 		
@@ -143,6 +146,41 @@ public class EnemyFactory
 			((BasicEnemy) kodantrwm).setStart(false);
 		
 		return kodantrwm;
+	}
+	
+	private DestructableObject createKodanswyn() 
+	{
+		DestructableObject kodanswyn;
+		
+		int enemyx = -1;
+		
+		if(new Random().nextInt(2)==0)	
+			enemyx = 0;
+		else
+			enemyx = Processing.getInstance().getParent().width;
+		
+		
+		
+		if(enemyx == 0)
+			kodanswyn = new Kodanswyn(0, 0, "enemies/kodanswyn_left.png", "kodanswynLeft", 1, 3);
+		else
+			kodanswyn = new Kodanswyn(0, 0, "enemies/kodanswyn_right.png", "kodanswynRight", 1, 3);
+		
+		kodanswyn.setDamageDealt(0);
+		kodanswyn.setHealth(20);
+		kodanswyn.setSpeed(5);
+
+		if(enemyx != 0)
+		{
+			((Kodanswyn) kodanswyn).setStart(false);
+			enemyx -= kodanswyn.getWidth();
+		}
+		else
+			((Kodanswyn) kodanswyn).setStart(true);
+		
+		kodanswyn.setX(enemyx);
+		
+		return kodanswyn;
 	}
 	
 	private void createBasicEnemy(DestructableObject enemy, int health, int speed)

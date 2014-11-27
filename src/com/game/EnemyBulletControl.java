@@ -4,25 +4,25 @@ import java.util.ArrayList;
 
 import com.engine.DestructableObject;
 
-public class EnemyBulletPool 
+public class EnemyBulletControl 
 {
 	
-	private static EnemyBulletPool instance = null;
+	private static EnemyBulletControl instance = null;
 	private BulletPool enemyBullets;
 	private BulletPool redBullets;
 	private BulletPool chargeShoot;
 	private int playerx;
 	private int playery;
 	
-	public static EnemyBulletPool getInstance()
+	public static EnemyBulletControl getInstance()
 	{
 		if(instance == null)
-			instance = new EnemyBulletPool();
+			instance = new EnemyBulletControl();
 		
 		return instance;
 	}
 	
-	private EnemyBulletPool()
+	private EnemyBulletControl()
 	{
 		enemyBullets = new BulletPool(60);
 		redBullets = new BulletPool(120);
