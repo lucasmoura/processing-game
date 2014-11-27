@@ -39,6 +39,9 @@ public class EnemyFactory
 			case Enemy.KODANRUTHR:
 				return createKodanruthr();
 				
+			case Enemy.KODANTRWM:
+				return createKodantrwm();
+				
 			default:
 				return null;
 		}
@@ -67,7 +70,14 @@ public class EnemyFactory
 		DestructableObject kodancwch = new BasicEnemy(0, 0, 0, 0,
 				"enemyBlack1.png", "kodancwch", 1);
 		
-		createBasicEnemy(kodancwch, 40, 8, false);
+		createBasicEnemy(kodancwch, 20, 8);
+		
+		((BasicEnemy) kodancwch).setBulletType(false);
+		
+		if(kodancwch.getX() == 0)
+			((BasicEnemy) kodancwch).setStart(true);
+		else
+			((BasicEnemy) kodancwch).setStart(false);
 		
 		return kodancwch;
 		
@@ -79,7 +89,7 @@ public class EnemyFactory
 					"enemies/kodanruthr.png", "kodanruthr", 1);
 		
 		kodanruthr.setDamageDealt(0);
-		kodanruthr.setHealth(30);
+		kodanruthr.setHealth(20);
 		kodanruthr.setSpeed(30);
 		
 		int enemyx = -1;
@@ -105,32 +115,49 @@ public class EnemyFactory
 		DestructableObject kodancyflym = new BasicEnemy(0, 0, 0, 0,
 				"enemies/kodancyflym.png", "kodancyflym", 1);
 		
-		createBasicEnemy(kodancyflym, 50, 12, true);
+		createBasicEnemy(kodancyflym, 50, 12);
+		
+		((BasicEnemy) kodancyflym).setBulletType(true);
+		
+		if(kodancyflym.getX() == 0)
+			((BasicEnemy) kodancyflym).setStart(true);
+		else
+			((BasicEnemy) kodancyflym).setStart(false);
 		
 		return kodancyflym;
 		
 	}
 	
-	private void createBasicEnemy(DestructableObject enemy, int health, int speed, boolean bulletType)
+	private DestructableObject createKodantrwm() 
+	{
+		DestructableObject kodantrwm = new Kodantrwm(0, 0, "enemies/kodantrwm.png",
+				"kodantrwm", 1);
+		
+		createBasicEnemy(kodantrwm, 60, 5);
+		
+		((Kodantrwm) kodantrwm).setBulletType(true);
+		
+		if(kodantrwm.getX() == 0)
+			((BasicEnemy) kodantrwm).setStart(true);
+		else
+			((BasicEnemy) kodantrwm).setStart(false);
+		
+		return kodantrwm;
+	}
+	
+	private void createBasicEnemy(DestructableObject enemy, int health, int speed)
 	{
 		enemy.setDamageDealt(0);
 		enemy.setHealth(health);
 		enemy.setSpeed(speed);
 		
-		((BasicEnemy) enemy).setBulletType(bulletType);
-		
 		int enemyx = -1;
 				
 		if(new Random().nextInt(2)==0)
-		{
 			enemyx = 0;
-			((BasicEnemy) enemy).setStart(true);
-		}	
 		else
-		{
 			enemyx = Processing.getInstance().getParent().width - enemy.getWidth();
-			((BasicEnemy) enemy).setStart(false);
-		}	
+			
 		
 		enemy.setX(enemyx);
 	}

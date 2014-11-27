@@ -46,6 +46,9 @@ public class PlayState implements GameState
 	public void update() 
 	{
 		
+		EnemyBulletPool.getInstance().setPlayerx(admiralShip.getX());
+		EnemyBulletPool.getInstance().setPlayery(admiralShip.getY());
+		
 		if(!admiralShip.isAlive())
 		{
 			gameOver();
@@ -109,10 +112,13 @@ public class PlayState implements GameState
 		for(GameObject object: playObjects)
 			object.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(false))
+		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(0))
 			bullet.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(true))
+		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(1))
+			bullet.drawObject();
+		
+		for(DestructableObject bullet: EnemyBulletPool.getInstance().getPool(2))
 			bullet.drawObject();
 
 		PowerUpHolder.getInstance().drawObject();
@@ -170,8 +176,8 @@ public class PlayState implements GameState
 		quadTree = new QuadTree(0, 0, 0, applet.width, applet.height);
 		
 //		enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANRUTHR));
-//		enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANCWCH));
-//		
+//		enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANTRWM));
+		
 		playObjects.add(leftButton);
 		playObjects.add(rightButton);
 		
@@ -246,8 +252,9 @@ public class PlayState implements GameState
 		quadTree.insert(admiralShip);
 		
 		ArrayList<DestructableObject> bullets = admiralShip.getBulletPool().getPool();
-		bullets.addAll(EnemyBulletPool.getInstance().getPool(false));
-		bullets.addAll(EnemyBulletPool.getInstance().getPool(true));
+		bullets.addAll(EnemyBulletPool.getInstance().getPool(0));
+		bullets.addAll(EnemyBulletPool.getInstance().getPool(1));
+		bullets.addAll(EnemyBulletPool.getInstance().getPool(2));
 		
 		bullets.addAll(PowerUpHolder.getInstance().getActivePowerUps());
 		

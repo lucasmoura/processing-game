@@ -15,7 +15,7 @@ public class BasicEnemy extends DestructableObject implements Enemy
 	private int width;
 	private int[] possibleFixedPositions;
 	private int numberOfTicks;
-	private int stopPosition;
+	protected int stopPosition;
 	private boolean startPosition;
 	private boolean startRight;
 	private boolean explode;
@@ -34,16 +34,14 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		reachedPosition = startPosition = explode = false;
 		alive = true;
 		
-		possibleFixedPositions = new int[NUMBER_OF_FIXED_POSITIONS];
 		PApplet applet = Processing.getInstance().getParent();
-		
 		this.width = applet.width - this.objectWidth;
+		
+		possibleFixedPositions = new int[NUMBER_OF_FIXED_POSITIONS];
 		possibleFixedPositions[0] = applet.height/4;
 		
-		for(int i = 1; i<NUMBER_OF_FIXED_POSITIONS; i++)
-			possibleFixedPositions[i] = possibleFixedPositions[i-1] + possibleFixedPositions[i-1]/2;
+		setFixedPosition();
 		
-		stopPosition = possibleFixedPositions[new Random().nextInt(3)];
 		setCollidable("laser");
 		setCollidable("vulcanbullet");
 		setCollidable("gammabullet");
@@ -54,6 +52,14 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		
 		points = 20;
 		
+	}
+	
+	protected void setFixedPosition()
+	{
+		for(int i = 1; i<NUMBER_OF_FIXED_POSITIONS; i++)
+			possibleFixedPositions[i] = possibleFixedPositions[i-1] + possibleFixedPositions[i-1]/2;
+		
+		stopPosition = possibleFixedPositions[new Random().nextInt(3)];
 	}
 	
 	public void drawObject()
@@ -106,12 +112,17 @@ public class BasicEnemy extends DestructableObject implements Enemy
 			}	
 		}
 		
-		fireChance = Math.floor(Math.random()*101);
-		if (fireChance/100 < percentFire)
-			shoot();
+		willFire();
 		
 		move();
 		
+	}
+	
+	protected void willFire()
+	{
+		fireChance = Math.floor(Math.random()*101);
+		if (fireChance/100 < percentFire)
+			shoot();
 	}
 	
 	public void setStart(boolean start)

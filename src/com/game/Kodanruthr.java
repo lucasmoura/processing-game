@@ -48,7 +48,7 @@ public class Kodanruthr extends DestructableObject implements Enemy
 	@Override
 	public void shoot() 
 	{
-		EnemyBulletPool.getInstance().getBullet(false, getX()+37, getY()+this.getHeight()+30, 15, 20);	
+		EnemyBulletPool.getInstance().getChargeShoot(getX()+37, getY()+this.getHeight()+30, 15, 20);	
 	}
 
 	@Override

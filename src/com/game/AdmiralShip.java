@@ -43,6 +43,7 @@ public class AdmiralShip extends DestructableObject
 		setCollidable("speedboost");
 		setCollidable("healthincrease");
 		setCollidable("redLaser");
+		setCollidable("chargeShoot");
 		
 		weapon = PROTON_WEAPON;
 		speedBoost = speedBoostCounter = 0;
@@ -108,7 +109,7 @@ public class AdmiralShip extends DestructableObject
 		
 		if(counter>=fireRate)
 		{
-			//shoot();
+			shoot();
 			counter=0;
 		}
 		
@@ -134,11 +135,12 @@ public class AdmiralShip extends DestructableObject
 	private void shoot()
 	{
 		if(weapon == PROTON_WEAPON)
-			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 15, 10);
+			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 15, 10, 0);
 		else if(weapon == VULCAN_WEAPON)
-			bulletPool.getBulletPool(weapon).getThreeBullets(getX() +27, getX()+37, getX()+47, getY()-this.getHeight()+30, 15, 5);
+			bulletPool.getBulletPool(weapon).getThreeBullets(getX() +27, getX()+37, getX()+47,
+						getY()-this.getHeight()+30, 15, 5, 10);
 		else
-			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 10, 15);
+			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 10, 15, 0);
 	}
 
 	public BulletPool getBulletPool()

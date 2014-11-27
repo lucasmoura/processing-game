@@ -27,7 +27,7 @@ public class BulletPool
 		return true;
 	}
 	
-	public void getBullet(int x, int y, int speed, int damage)
+	public void getBullet(int x, int y, int speed, int damage, double angle)
 	{
 		
 		if(!bullets.getLast().isActive())
@@ -36,7 +36,15 @@ public class BulletPool
 			bullets.getLast().setY(y);
 			bullets.getLast().setSpeed(speed);
 			bullets.getLast().setDamageDealt(damage);
-			bullets.getLast().setMovement(Bullet.STRAIGHT_LINE);
+			
+			if(angle == 0)
+				bullets.getLast().setMovement(Bullet.STRAIGHT_LINE);
+			else
+			{
+				bullets.getLast().setMovement(Bullet.THREE_BULLETS);
+				bullets.getLast().setAngle(angle);
+			}
+			
 			bullets.getLast().setActive(true);
 			
 			bullets.push(bullets.pollLast());
@@ -61,7 +69,7 @@ public class BulletPool
 		bullets.get(position).setActive(true);
 	}
 	
-	public void getThreeBullets(int x1, int x2, int x3, int y, int speed, int damage)
+	public void getThreeBullets(int x1, int x2, int x3, int y, int speed, int damage, int angle)
 	{
 		int size = bullets.size();
 		
@@ -70,9 +78,9 @@ public class BulletPool
 			&& !bullets.get(size-3).isActive())
 		{
 			//System.out.println("Shoot three bullets");
-			setBullet(size-1, x1, y, speed, damage, 80);
+			setBullet(size-1, x1, y, speed, damage, 90 - angle);
 			setBullet(size-2, x2, y, speed, damage, 0);
-			setBullet(size-3, x3, y, speed, damage, 100);
+			setBullet(size-3, x3, y, speed, damage, 90 + angle);
 			
 			bullets.push(bullets.pollLast());
 			bullets.push(bullets.pollLast());

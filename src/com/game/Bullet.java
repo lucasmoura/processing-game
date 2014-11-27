@@ -50,13 +50,7 @@ public class Bullet extends DestructableObject
 		if(type == PLAYER_BULLET)
 			updatePlayerBullet();
 		else
-		{
-			
-			if((this.position.getY() + speed) <= height)
-				this.position.setY(this.position.getY() + speed);
-			else
-				isInScreen = false;
-		}
+			updateEnemyBullet();
 		
 	}
 	
@@ -78,6 +72,30 @@ public class Bullet extends DestructableObject
 			{
 				this.setY(this.getY() - (int) vy);
 				this.setX(this.getX() - (int) vx);
+			}	
+			else
+				isInScreen = false;
+		}
+	}
+	
+	private void updateEnemyBullet()
+	{
+		if(movement == STRAIGHT_LINE)
+		{
+			if((this.position.getY() + speed) <= height)
+				this.position.setY(this.position.getY() + speed);
+			else
+				isInScreen = false;
+		}
+		else
+		{
+			double vx = speed*Math.cos(angle*Math.PI/180.0);
+			double vy = speed*Math.sin(angle*Math.PI/180.0);
+			
+			if(this.getY() + speed <= height)
+			{
+				this.setY(this.getY() + (int) vy);
+				this.setX(this.getX() + (int) vx);
 			}	
 			else
 				isInScreen = false;
