@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.engine.Button;
 import com.engine.GameObject;
 import com.engine.Processing;
+import com.engine.SoundManager;
 import com.engine.TextureManager;
 import com.lonesurvivor.Game;
 
@@ -90,13 +91,34 @@ public class MenuState implements GameState
 	      return false;
 	    
 	    createMenu();
+	    loadSounds();
+	    
+	    
+	    SoundManager.getInstance().playSound("menutheme", true);
+	    
 	    return true;
 	    
 	  }
 	  
+	  private void loadSounds()
+	  {
+		  SoundManager.getInstance().addMusic("menutheme", "sound/music/Black_Vortex.ogg", true);
+		  SoundManager.getInstance().addMusic("click", "sound/effect/mechanical_metallic_rattle-001.ogg", false);
+	  }
+	  
 	  public boolean onExit()
 	  {
-	    return true;
+		 for(GameObject object: menuObjects) 
+			 object.clean();
+		 
+		 TextureManager.getInstance().clearFromTextureMap("background");
+		 TextureManager.getInstance().clearFromTextureMap("title");
+		 
+		 SoundManager.getInstance().stop();
+		 SoundManager.getInstance().clearFromSoundManager("menutheme", true);
+		 SoundManager.getInstance().clearFromSoundManager("click", false);
+		 
+	     return true;
 	  } 
 	  
 	  public void enable()
@@ -121,15 +143,14 @@ public class MenuState implements GameState
 	  
 	  public void mouseReleased(int x, int y)
 	  {
-		  
-//		 Log.i(LOG_TAG, "Mene mouse released");
-//		 Log.i(LOG_TAG, String.valueOf(playButton.touchOnMe(x, y)));
-//		 Log.i(LOG_TAG, "x: "+x + ", y: "+y);
 		
 	    if (playButton.touchOnMe(x, y))
 	    {
-	     menuToPlay();
-	    }
+	    	SoundManager.getInstance().playSound("click", false);
+	    	menuToPlay();
+	    	return;
+	    }	
+	    
 	   
 	  }
 	  

@@ -6,6 +6,7 @@ import processing.core.PApplet;
 
 import com.engine.DestructableObject;
 import com.engine.Processing;
+import com.engine.SoundManager;
 
 public class BasicEnemy extends DestructableObject implements Enemy 
 {
@@ -84,6 +85,12 @@ public class BasicEnemy extends DestructableObject implements Enemy
 	public void shoot() 
 	{
 		EnemyBulletControl.getInstance().getBullet(bulletType, getX()+37, getY()+this.getHeight()+30, 15, 10);	
+		shootSound();
+	}
+	
+	public void shootSound()
+	{
+		SoundManager.getInstance().playSound("enemyshoot", false);
 	}
 
 	@Override
@@ -205,7 +212,7 @@ public class BasicEnemy extends DestructableObject implements Enemy
 	{
 		int num = new Random().nextInt(100);
 		
-		if(num <= 80)
+		if(num <= 10)
 		{
 			int type = new Random().nextInt(5);
 			PowerUpFactory.getInstance().createPowerUp(type, getX(), getY());	

@@ -3,6 +3,7 @@ package com.main;
 import android.view.MotionEvent;
 
 import com.engine.Processing;
+import com.engine.SoundManager;
 import com.engine.TextureManager;
 import com.lonesurvivor.Game;
 
@@ -59,6 +60,29 @@ public class MainActivity extends PApplet  //PApplet in fact extends android.app
     	  return super.surfaceTouchEvent(event);
     	}
     
+  
+    @Override
+    public void onDestroy()
+    {
+    	System.out.println("Passei aqui");
+    	super.onDestroy();
+    	
+    	SoundManager.getInstance().clean();
+    }
+    
+    @Override
+    public void onStop()
+    {
+    	super.onStop();
+    	SoundManager.getInstance().stop();
+    }
+    
+    @Override
+    public void onRestart()
+    {
+    	super.onRestart();
+    	SoundManager.getInstance().resume();
+    }
     
 //    public void mouseReleased()
 //    {

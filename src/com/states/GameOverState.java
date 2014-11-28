@@ -5,6 +5,7 @@ import processing.core.PFont;
 
 import com.engine.Button;
 import com.engine.Processing;
+import com.engine.SoundManager;
 import com.engine.TextureManager;
 import com.lonesurvivor.Game;
 
@@ -78,6 +79,8 @@ public class GameOverState implements GameState
 	@Override
 	public boolean onExit() 
 	{
+		
+		SoundManager.getInstance().stop();
 		TextureManager.getInstance().clearFromTextureMap(gameOverTitle);
 		TextureManager.getInstance().clearFromTextureMap("background");
 		TextureManager.getInstance().clearFromTextureMap("scoreIcon");

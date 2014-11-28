@@ -129,7 +129,7 @@ public class Kodanruthr extends DestructableObject implements Enemy
 	{
 		int num = new Random().nextInt(100);
 		
-		if(num <= 80)
+		if(num <= 10)
 		{
 			int type = new Random().nextInt(5);
 			PowerUpFactory.getInstance().createPowerUp(type, getX(), getY());	

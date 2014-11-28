@@ -8,6 +8,7 @@ import com.engine.DestructableObject;
 import com.engine.GameObject;
 import com.engine.Processing;
 import com.engine.QuadTree;
+import com.engine.SoundManager;
 import com.game.AdmiralShip;
 import com.game.Bullet;
 import com.game.EnemyBulletControl;
@@ -198,16 +199,30 @@ public class PlayState implements GameState
 		
 		//enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANRUTHR));
 		//enemies.add(EnemyFactory.getInstance().createEnemy(Enemy.KODANSWYN));
+		loadSounds();
+		SoundManager.getInstance().playSound("playtheme", true);
 		
 		playObjects.add(leftButton);
 		playObjects.add(rightButton);
 		
 		return true;
 	}
+	
+	private void loadSounds()
+	{
+		SoundManager.getInstance().addMusic("playtheme", "sound/music/Cephalopod.ogg", true);
+		SoundManager.getInstance().addMusic("protonshoot", "sound/effect/sfx_laser2.ogg", false);
+		SoundManager.getInstance().addMusic("powerup", "sound/effect/menu_pickup_treasure_coins-001.wav", false);
+		SoundManager.getInstance().addMusic("gammashoot", "sound/effect/scifi_laser-003.wav", false);
+		SoundManager.getInstance().addMusic("vulcanshoot", "sound/effect/scifi_laser_gun-001.wav", false);
+		SoundManager.getInstance().addMusic("explosion", "sound/effect/explosion_medium_close-004.wav", false);
+		SoundManager.getInstance().addMusic("enemyshoot", "sound/effect/scifi_laser_gun-003.wav", false);
+	}
 
 	@Override
 	public boolean onExit() 
 	{
+		
 		leftButton.clean();
 		rightButton.clean();
 		
@@ -223,6 +238,15 @@ public class PlayState implements GameState
 		admiralShip.clean();
 		
 		starfield = null;
+		
+		SoundManager.getInstance().clearFromSoundManager("playtheme", true);
+		SoundManager.getInstance().clearFromSoundManager("protonshoot", false);
+		SoundManager.getInstance().clearFromSoundManager("gammashoot", false);
+		SoundManager.getInstance().clearFromSoundManager("vulcanshoot", false);
+		SoundManager.getInstance().clearFromSoundManager("powerup", false);
+		SoundManager.getInstance().clearFromSoundManager("explosion", false);
+		SoundManager.getInstance().clearFromSoundManager("enemyshoot", false);
+		
 		return true;
 	}
 	

@@ -115,7 +115,7 @@ public class Asteroid extends DestructableObject implements Enemy
 	{
 		int num = new Random().nextInt(100);
 		
-		if(num <= 80)
+		if(num <= 10)
 		{
 			int type = 2;
 			PowerUpFactory.getInstance().createPowerUp(type, getX(), getY());	

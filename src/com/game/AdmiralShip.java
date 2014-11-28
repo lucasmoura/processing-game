@@ -1,13 +1,14 @@
 package com.game;
 
 import com.engine.DestructableObject;
+import com.engine.SoundManager;
 
 public class AdmiralShip extends DestructableObject
 {
 	
 	private boolean moveRight;
 	private boolean moveLeft;
-	private int speedMovement = 12;
+	private int speedMovement;
 	private int speedBoost;
 	private int speedBoostCounter;
 	private int width = 1814;
@@ -34,6 +35,7 @@ public class AdmiralShip extends DestructableObject
 		counter = fireRate;
 		bulletPool = new PlayerBulletControl();
 		gravitationalMovement = 0;
+		speedMovement = 14;
 		
 		alive = true;
 		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
@@ -148,12 +150,21 @@ public class AdmiralShip extends DestructableObject
 	private void shoot()
 	{
 		if(weapon == PROTON_WEAPON)
+		{
 			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 15, 10, 0);
+			SoundManager.getInstance().playSound("protonshoot", false);
+		}	
 		else if(weapon == VULCAN_WEAPON)
+		{
 			bulletPool.getBulletPool(weapon).getThreeBullets(getX() +27, getX()+37, getX()+47,
-						getY()-this.getHeight()+30, 15, 5, 10);
+					getY()-this.getHeight()+30, 15, 5, 10);
+			SoundManager.getInstance().playSound("vulcanshoot", false);
+		}		
 		else
+		{
 			bulletPool.getBulletPool(weapon).getBullet(getX()+37, getY()-this.getHeight()+30, 10, 15, 0);
+			SoundManager.getInstance().playSound("gammashoot", false);
+		}	
 	}
 
 	public BulletPool getBulletPool()
@@ -240,6 +251,8 @@ public class AdmiralShip extends DestructableObject
 				break;
 				
 		}
+		
+		SoundManager.getInstance().playSound("powerup", false);
 	}
 	
 	public void clean()

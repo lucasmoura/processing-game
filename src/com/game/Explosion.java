@@ -4,11 +4,13 @@ import processing.core.PApplet;
 
 import com.engine.GameObject;
 import com.engine.Processing;
+import com.engine.SoundManager;
 
 public class Explosion extends GameObject
 {
 	private int counter;
 	private boolean over;
+	private boolean playSound;
 
 	public Explosion(int x, int y, int objectWidth, int objectHeight,
 			String imagePath, String imageId, int numFrames)
@@ -17,6 +19,7 @@ public class Explosion extends GameObject
 		
 		counter = 0;
 		over = false;
+		playSound = true;
 		
 	}
 
@@ -32,6 +35,14 @@ public class Explosion extends GameObject
 		
 		if(counter++ == numFrames)
 			over = true;
+		
+		if(playSound)
+		{
+			SoundManager.getInstance().playSound("explosion", false);
+			playSound = false;
+		}
+		
+		
 	}
 
 	public boolean isOver() 
