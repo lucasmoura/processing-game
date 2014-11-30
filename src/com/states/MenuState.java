@@ -141,6 +141,16 @@ public class MenuState implements GameState
 		  Game.getInstance().getStateMachine().changeState(new PlayState());
 	  }
 	  
+	  public void menuToSettings()
+	  {
+		  Game.getInstance().getStateMachine().pushState(SettingsState.getInstance());
+	  }
+	  
+	  public void menuToCredits()
+	  {
+		  Game.getInstance().getStateMachine().pushState(new CreditsState());
+	  }
+	  
 	  public void mouseReleased(int x, int y)
 	  {
 		
@@ -149,7 +159,23 @@ public class MenuState implements GameState
 	    	SoundManager.getInstance().playSound("click", false);
 	    	menuToPlay();
 	    	return;
-	    }	
+	    }
+	    
+	    if(settingsButton.touchOnMe(x, y))
+	    {
+	    	SoundManager.getInstance().playSound("click", false);
+	    	menuToSettings();
+	    	settingsButton.setPressed(false);
+	    	return;
+	    }
+	    
+	    if(creditButton.touchOnMe(x, y))
+	    {
+	    	SoundManager.getInstance().playSound("click", false);
+	    	menuToCredits();
+	    	creditButton.setPressed(false);
+	    	return;
+	    }
 	    
 	   
 	  }

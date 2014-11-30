@@ -70,6 +70,11 @@ public class Button extends GameObject
 	  
 	  public void setPressed(boolean value)
 	  {
+		  if(!value)
+			  currentRow = OUT;
+		  else
+			  currentRow = CLICKED;
+		  
 		  isPressed = value;
 	  }
 	  

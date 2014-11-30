@@ -20,13 +20,13 @@ public class EnemySpawn
 	
 	public EnemySpawn()
 	{
-		enemySpawnCooldown = 17;
-		asteroidSpawnChance = 80;
-		kodancwchSpawnChance = 130;
-		kodancyflymSpawnChance = 190;
-		kodanruthrSpawnChance = 270;
-		kodantrwmSpawnChance = 400;
-		kodanswynSpawnChance = 600;
+		enemySpawnCooldown = 19;
+		asteroidSpawnChance = 100;
+		kodancwchSpawnChance = 150;
+		kodancyflymSpawnChance = 230;
+		kodanruthrSpawnChance = 310;
+		kodantrwmSpawnChance = 550;
+		kodanswynSpawnChance = 420;
 		enemies = new ArrayList<DestructableObject>();
 		rand = new Random();
 	}

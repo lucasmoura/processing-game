@@ -18,6 +18,8 @@ public class SoundManager
 	private SoundPool effect;
 	private int stopPosition;
 	private AssetManager assetManager;
+	private boolean musicEnable;
+	private boolean effectEnable;
 	
 	public static SoundManager getInstance()
 	{
@@ -35,6 +37,8 @@ public class SoundManager
 		
 		player = new APMediaPlayer(Processing.getInstance().getParent());
 		effect = new SoundPool(50, AudioManager.STREAM_MUSIC, 0);
+		
+		musicEnable = effectEnable = true;
 		
 		assetManager = Processing.getInstance().getParent().getAssets();
 		
@@ -61,8 +65,12 @@ public class SoundManager
 			try
 			{
 				player.setMediaFile(music.get(soundId));
-				player.start();
-				player.setLooping(true);
+				
+				if(musicEnable)
+				{
+					player.start();
+					player.setLooping(true);
+				}
 			}
 			catch(Exception e)
 			{
@@ -71,7 +79,8 @@ public class SoundManager
 		}	
 		else
 		{
-			 effect.play(soundEffect.get(soundId), 1, 1, 0, 0, 1);
+			if(effectEnable)
+				effect.play(soundEffect.get(soundId), 1, 1, 0, 0, 1);
 		}	
 	
 	}
@@ -109,6 +118,24 @@ public class SoundManager
 		player.pause();
 		effect.release();
 		player.release();
+	}
+	
+	public void setMusicEnable(boolean musicEnable)
+	{
+		this.musicEnable = musicEnable;
+		
+		if(!musicEnable)
+			stop();
+		else if(stopPosition != -1)
+		{
+			player.seekTo(stopPosition);
+			player.start();
+		}	
+	}
+	
+	public void setEffectEnable(boolean effectEnable)
+	{
+		this.effectEnable = effectEnable;
 	}
 
 }

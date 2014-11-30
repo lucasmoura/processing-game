@@ -36,6 +36,7 @@ public class PlayState implements GameState
 	private final String playID = "PLAY";
 	private Button leftButton; 
 	private Button rightButton;
+	private Button pauseButton;
 	private AdmiralShip admiralShip;
 	private QuadTree quadTree;
 	private PlayHUD playHUD;
@@ -177,6 +178,12 @@ public class PlayState implements GameState
 		leftButton.setX(leftx);
 		leftButton.setY(lefty);
 		
+		pauseButton = new Button(0, 0, "buttons/pause.png", "pause", 1, false);
+		int pausex = Processing.getInstance().getParent().width - pauseButton.getWidth() - 30;
+		int pausey = 10;
+		pauseButton.setX(pausex);
+		pauseButton.setY(pausey);
+		
 		admiralShip = new AdmiralShip(0, 0, 0, 0, "admiralship.png",
 				"admiralship", 1);
 		int shipx = applet.width/2 - admiralShip.getWidth()/2;
@@ -204,6 +211,7 @@ public class PlayState implements GameState
 		
 		playObjects.add(leftButton);
 		playObjects.add(rightButton);
+		playObjects.add(pauseButton);
 		
 		return true;
 	}
@@ -361,6 +369,11 @@ public class PlayState implements GameState
 	
 	public void mouseReleased(int x, int y) 
 	{
+		
+		if(pauseButton.touchOnMe(x, y))
+		{
+			Game.getInstance().getStateMachine().pushState(new PauseState());
+		}
 		
 		leftButton.setPressed(false);
 		rightButton.setPressed(false);
