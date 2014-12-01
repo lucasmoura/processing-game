@@ -64,7 +64,6 @@ public class MainActivity extends PApplet  //PApplet in fact extends android.app
     @Override
     public void onDestroy()
     {
-    	System.out.println("Passei aqui");
     	super.onDestroy();
     	
     	SoundManager.getInstance().clean();

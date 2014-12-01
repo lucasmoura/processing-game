@@ -3,6 +3,8 @@ package com.states;
 import processing.core.PApplet;
 import processing.core.PFont;
 
+import android.content.SharedPreferences;
+
 import com.engine.Button;
 import com.engine.Processing;
 import com.engine.SoundManager;
@@ -73,7 +75,24 @@ public class GameOverState implements GameState
 		
 		playerFinalScore = applet.createFont("Arial", 16, false);
 		
+		setBestScore();
+		
 		return true;
+	}
+
+	private void setBestScore()
+	{
+		 SharedPreferences score = applet.getSharedPreferences("score", 0);
+		 long bestScore = score.getLong("score", 0);
+		 
+		 if(bestScore < this.score)
+		 {
+			 SharedPreferences.Editor editor = score.edit();
+			 editor.putLong("score", this.score);
+
+			 editor.commit();
+		 }	 
+	      
 	}
 
 	@Override

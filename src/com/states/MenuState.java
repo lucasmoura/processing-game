@@ -2,6 +2,11 @@ package com.states;
 
 import java.util.ArrayList;
 
+import processing.core.PApplet;
+import processing.core.PFont;
+
+import android.content.SharedPreferences;
+
 import com.engine.Button;
 import com.engine.GameObject;
 import com.engine.Processing;
@@ -15,7 +20,9 @@ public class MenuState implements GameState
 	  private Button playButton;
 	  private Button creditButton;
 	  private Button settingsButton;
-	  private Button tutorialButton;
+	  private long bestScore;
+	  private PFont bestScoreText;
+	  private PApplet applet;
 	  
 
 	  private ArrayList<GameObject> menuObjects;
@@ -27,44 +34,34 @@ public class MenuState implements GameState
 	  
 	  private void createMenu()
 	  {
-	    int space = 300;
-	    int verticalSpace = 300;
+	    int verticalSpace = 200;
+	    applet = Processing.getInstance().getParent();
 	    
 	    playButton = new Button(0, 0, "play.png", "play", 2, true);
-	    int playx = space;
-	    int playy = Processing.getInstance().getParent().displayHeight/2;
+	    int playx = applet.width/2 - playButton.getWidth()/2;
+	    int playy = applet.displayHeight/2 + verticalSpace;
 	    playy = playy - playButton.getHeight()/2;
 	    playButton.setPosition(playx, playy);
 	    
-	    settingsButton = new Button(0, 0, "settings.png", "settings", 2, true);
-	    int settingsx = space;
-	    int settingsy = Processing.getInstance().getParent().displayHeight/2;
-	    settingsy = settingsy - settingsButton.getHeight()/2 + verticalSpace;
+	    settingsButton = new Button(0, 0, "buttons/settingsIcon.png", "settings", 2, true);
+	    int settingsx = applet.width - settingsButton.getWidth();
+	    int settingsy = applet.height - settingsButton.getHeight();
 	    settingsButton.setPosition(settingsx, settingsy);
 	    
-	    tutorialButton = new Button(0, 0, "tutorial.png", "tutorial", 2, true);
-	    int tutorialx = 1000;
-	    int tutorialy = playy;
-	    tutorialButton.setPosition(tutorialx, tutorialy);
-	    
 	    creditButton = new Button(0, 0, "credits.png", "credits", 2, true);
-	    int creditsx = 1000;
-	    int creditsy = settingsy;
+	    int creditsx = playx;
+	    int creditsy = playy + verticalSpace;
 	    creditButton.setPosition(creditsx, creditsy);
 	    
 	    menuObjects.add(playButton);
 	    menuObjects.add(settingsButton);
-	    menuObjects.add(tutorialButton);
 	    menuObjects.add(creditButton);
 	  }
 	  
 	  public void update()
 	  {
 	    for(int i =0; i<menuObjects.size(); i++)
-	    {
-	      //Log.v(LOG_TAG, "rendering: "+menuObjects.get(i).getClass().getName());
 	      menuObjects.get(i).update();
-	    }
 	  }
 	  
 	  public void render()
@@ -73,6 +70,11 @@ public class MenuState implements GameState
 	   TextureManager.getInstance().drawObject("background", 0, 0);
 	   TextureManager.getInstance().drawObject("title", 
 			   TextureManager.getInstance().getPApplet().displayWidth/2 - 1338/2, 100);
+	   TextureManager.getInstance().drawObject("bestscore", playButton.getX() - 150 , playButton.getY() - 250);
+	   
+	   applet.textFont(bestScoreText, 85);
+	   applet.fill(255);
+	   applet.text(String.valueOf(bestScore), playButton.getX() - 150 + 630 , playButton.getY() +  -170);
 	   
 	    for(int i =0; i<menuObjects.size(); i++)
 	      menuObjects.get(i).drawObject();
@@ -87,17 +89,30 @@ public class MenuState implements GameState
 	    TextureManager.getInstance().getImage("background").resize(1980, 1120);
 	    TextureManager.getInstance().getImage("background").loadPixels();
 	    
+	    TextureManager.getInstance().loadGameImage("titles/bestscoretitle.png", "bestscore");
+	    
 	    if(TextureManager.getInstance().loadGameImage("gametitle.png", "title") == false)
 	      return false;
 	    
 	    createMenu();
 	    loadSounds();
+	    updateBestScore();
 	    
+	    bestScoreText = applet.createFont("Arial", 16, false);
 	    
 	    SoundManager.getInstance().playSound("menutheme", true);
 	    
 	    return true;
 	    
+	  }
+	  
+	  private void updateBestScore()
+	  {
+		  SharedPreferences score = Processing.getInstance().getParent().getSharedPreferences("score", 0);
+		  long bestScore =  score.getLong("score", 0);
+		  
+		  this.bestScore = bestScore;
+
 	  }
 	  
 	  private void loadSounds()
@@ -113,6 +128,7 @@ public class MenuState implements GameState
 		 
 		 TextureManager.getInstance().clearFromTextureMap("background");
 		 TextureManager.getInstance().clearFromTextureMap("title");
+		 TextureManager.getInstance().clearFromTextureMap("bestscore");
 		 
 		 SoundManager.getInstance().stop();
 		 SoundManager.getInstance().clearFromSoundManager("menutheme", true);

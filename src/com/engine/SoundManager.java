@@ -105,10 +105,13 @@ public class SoundManager
 	
 	public void resume()
 	{
-		if(stopPosition != -1)
-			player.seekTo(stopPosition);
-		
-		player.start();
+		if(musicEnable)
+		{
+			if(stopPosition != -1)
+				player.seekTo(stopPosition);
+			
+			player.start();
+		}
 	}
 	
 	public void clean()
@@ -130,7 +133,7 @@ public class SoundManager
 		{
 			player.seekTo(stopPosition);
 			player.start();
-		}	
+		}	 
 	}
 	
 	public void setEffectEnable(boolean effectEnable)
