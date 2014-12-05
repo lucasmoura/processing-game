@@ -4,25 +4,42 @@ import java.util.Random;
 
 import processing.core.PApplet;
 
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 import com.engine.Processing;
 import com.engine.SoundManager;
 
-public class BasicEnemy extends DestructableObject implements Enemy 
+/*
+ * Class used to model enemies in the game. The methods move and willFire need to be overwritten if different
+ * movement and shooting patterns are required
+ */
+public class BasicEnemy extends CollidableObject implements Enemy 
 {
 
+	//Variable used to represent if the enemy has reached its fixed location
 	protected boolean reachedPosition;
+	//Variable used to verify if the enemy is still alive
 	private boolean alive;
+	//Enemy width
 	private int width;
+	//Array containing the possible position the player can reach before moving horizontally throuhg the screen
 	private int[] possibleFixedPositions;
+	//Variable to control the shooting mechanics
 	private int numberOfTicks;
+	//The stop position the enemy must reach to starts moving horizontally or to start other defined moving pattern
 	protected int stopPosition;
+	//The enemy starting position
 	private boolean startPosition;
+	//If the player has started at the right corned of the screen
 	protected boolean startRight;
+	//Verify is the player is dead and is currently exploding
 	protected boolean explode;
+	//Object that is used to create the explosion animation
 	private Explosion explosion;
+	//Shooting probability threshold
 	private double fireChance;
+	//Probability of firing
 	private double percentFire;
+	//The enemy bullet type
 	private boolean bulletType;
 	
 	private final int NUMBER_OF_FIXED_POSITIONS = 3;
@@ -35,7 +52,7 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		reachedPosition = startPosition = explode = false;
 		alive = true;
 		
-		PApplet applet = Processing.getInstance().getParent();
+		PApplet applet = Processing.getInstance().getPApplet();
 		this.width = applet.width - this.objectWidth;
 		
 		possibleFixedPositions = new int[NUMBER_OF_FIXED_POSITIONS];
@@ -55,6 +72,9 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		
 	}
 	
+	/*
+	 * Method used to find a stop position
+	 */
 	protected void setFixedPosition()
 	{
 		for(int i = 1; i<NUMBER_OF_FIXED_POSITIONS; i++)
@@ -63,6 +83,9 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		stopPosition = possibleFixedPositions[new Random().nextInt(3)];
 	}
 	
+	/*
+	 * @see com.engine.CollidableObject#drawObject()
+	 */
 	public void drawObject()
 	{
 		if(!explode && alive)
@@ -71,6 +94,9 @@ public class BasicEnemy extends DestructableObject implements Enemy
 			explode();
 	}
 
+	/*
+	 * @see com.game.Enemy#move()
+	 */
 	@Override
 	public void move() 
 	{
@@ -81,6 +107,9 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		
 	}
 
+	/*
+	 * @see com.game.Enemy#shoot()
+	 */
 	@Override
 	public void shoot() 
 	{
@@ -88,17 +117,26 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		shootSound();
 	}
 	
+	/*
+	 * Method used to play a shooting effect when the enemy fire a bullet
+	 */
 	public void shootSound()
 	{
 		SoundManager.getInstance().playSound("enemyshoot", false);
 	}
 
+	/*
+	 * @see com.game.Enemy#isAlive()
+	 */
 	@Override
 	public boolean isAlive() 
 	{
 		return alive;
 	}
 
+	/*
+	 * @see com.engine.CollidableObject#update()
+	 */
 	@Override
 	public void update() 
 	{
@@ -125,8 +163,12 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		
 	}
 	
+	/*
+	 * Method used to set the fire mechanics of the enemy. The implemented method is a basic pattern of shooting
+	 */
 	protected void willFire()
 	{
+		//If the fire chance is smaller than a threshold, shoot
 		fireChance = Math.floor(Math.random()*101);
 		if (fireChance/100 < percentFire)
 			shoot();
@@ -137,6 +179,10 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		startRight = start;
 	}
 	
+	/*
+	 * Method used to see the enemy movement pattern. Start by using the sin function to reach the 
+	 * stop position, to simulate a wave behaviour. 
+	 */
 	private void reachDestination()
 	{
 		
@@ -163,6 +209,11 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		
 	}
 	
+	/*
+	 * Method used to set the horizontal movement of the enemy. Move normally until reaching an screen boundary,
+	 * then start applying the sin function again to proportionate a smooth movement of the enemy when it reaches the
+	 * screen boundaries
+	 */
 	private void moveInStraightLine()
 	{
 		
@@ -194,6 +245,9 @@ public class BasicEnemy extends DestructableObject implements Enemy
 		
 	}
 	
+	/*
+	 * Method used to display a explode animation
+	 */
 	private void explode()
 	{
 		explosion.setX(getX());
@@ -208,10 +262,14 @@ public class BasicEnemy extends DestructableObject implements Enemy
 			alive = false;
 	}
 	
+	/*
+	 * Method used to verify if the enemy will drop a power up once it is destroyed
+	 */
 	private void dropPowerUp()
 	{
 		int num = new Random().nextInt(100);
 		
+		//If the number is smaller than a threshold, a power up will be randomly created
 		if(num <= 10)
 		{
 			int type = new Random().nextInt(5);

@@ -77,7 +77,7 @@ public class SettingsState implements GameState
 	@Override
 	public boolean onEnter() 
 	{
-		applet = Processing.getInstance().getParent();
+		applet = Processing.getInstance().getPApplet();
 		width = applet.width;
 		height = applet.height;
 		
@@ -116,18 +116,6 @@ public class SettingsState implements GameState
 		back.clean();
 		
 		return true;
-	}
-
-	@Override
-	public void enable() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void disable() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

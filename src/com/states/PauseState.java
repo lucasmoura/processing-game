@@ -4,7 +4,6 @@ import processing.core.PApplet;
 
 import com.engine.Button;
 import com.engine.Processing;
-import com.engine.SoundManager;
 import com.engine.TextureManager;
 import com.lonesurvivor.Game;
 
@@ -46,7 +45,7 @@ public class PauseState implements GameState
 	@Override
 	public boolean onEnter()
 	{
-		PApplet applet = Processing.getInstance().getParent();
+		PApplet applet = Processing.getInstance().getPApplet();
 		width = applet.width;
 		height = applet.height;
 		
@@ -77,7 +76,7 @@ public class PauseState implements GameState
 	@Override
 	public boolean onExit() 
 	{
-		SoundManager.getInstance().stop();
+		//SoundManager.getInstance().stop();
 		TextureManager.getInstance().clearFromTextureMap("pausetitle");
 		TextureManager.getInstance().clearFromTextureMap("background");
 		
@@ -86,18 +85,6 @@ public class PauseState implements GameState
 		settings.clean();
 		
 		return true;
-	}
-
-	@Override
-	public void enable() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void disable() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

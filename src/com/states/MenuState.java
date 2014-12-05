@@ -35,7 +35,6 @@ public class MenuState implements GameState
 	  private void createMenu()
 	  {
 	    int verticalSpace = 200;
-	    applet = Processing.getInstance().getParent();
 	    
 	    playButton = new Button(0, 0, "play.png", "play", 2, true);
 	    int playx = applet.width/2 - playButton.getWidth()/2;
@@ -68,8 +67,7 @@ public class MenuState implements GameState
 	  {
 	    
 	   TextureManager.getInstance().drawObject("background", 0, 0);
-	   TextureManager.getInstance().drawObject("title", 
-			   TextureManager.getInstance().getPApplet().displayWidth/2 - 1338/2, 100);
+	   TextureManager.getInstance().drawObject("title", applet.displayWidth/2 - 1338/2, 100);
 	   TextureManager.getInstance().drawObject("bestscore", playButton.getX() - 150 , playButton.getY() - 250);
 	   
 	   applet.textFont(bestScoreText, 85);
@@ -83,6 +81,8 @@ public class MenuState implements GameState
 	  
 	  public boolean onEnter()
 	  {
+		 applet = Processing.getInstance().getPApplet();  
+		  
 	    if(TextureManager.getInstance().loadGameImage("space.jpg", "background") == false)
 	      return false;
 	    
@@ -102,13 +102,14 @@ public class MenuState implements GameState
 	    
 	    SoundManager.getInstance().playSound("menutheme", true);
 	    
+	    System.out.println("Passou aqui");
 	    return true;
 	    
 	  }
 	  
 	  private void updateBestScore()
 	  {
-		  SharedPreferences score = Processing.getInstance().getParent().getSharedPreferences("score", 0);
+		  SharedPreferences score = Processing.getInstance().getPApplet().getSharedPreferences("score", 0);
 		  long bestScore =  score.getLong("score", 0);
 		  
 		  this.bestScore = bestScore;

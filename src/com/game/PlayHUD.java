@@ -6,6 +6,9 @@ import processing.core.PFont;
 import com.engine.Processing;
 import com.engine.TextureManager;
 
+/*
+ * Class used to represent the main game HUD, by displaying the player health and score
+ */
 public class PlayHUD
 {
 	private String hudBase;
@@ -50,7 +53,7 @@ public class PlayHUD
 	
 	public void init()
 	{
-		applet = Processing.getInstance().getParent();
+		applet = Processing.getInstance().getPApplet();
 		TextureManager.getInstance().loadGameImage("hudBase.png", hudBase);
 		TextureManager.getInstance().loadGameImage("healthIcon.png", healthIcon);
 		TextureManager.getInstance().loadGameImage("score.png", scoreIcon);

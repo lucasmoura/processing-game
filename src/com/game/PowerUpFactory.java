@@ -1,5 +1,10 @@
 package com.game;
 
+
+/*
+ * This class implements the Factory and singleton design pattern to allow a single channel to create a power up
+ * in the game. Therefore, every enemy in the game can create a power up by using the single instance of this class
+ */
 public class PowerUpFactory 
 {
 	
@@ -13,6 +18,13 @@ public class PowerUpFactory
 		return instance;
 	}
 	
+	/*
+	 * Method used to create a power up in the game
+	 * @param type: The power up type
+	 * @param x: The power up x position
+	 * @param y: the power up y position
+	 * @return: The created Power up
+	 */
 	public PowerUp createPowerUp(int type, int x, int y)
 	{
 		switch(type)
@@ -36,6 +48,11 @@ public class PowerUpFactory
 				return null;
 		}
 	}
+	
+	/*
+	 * Every power up created is also stored in the power up holder, that hold and manages all power ups still
+	 * present in the game
+	 */
 
 	private PowerUp createSpeedBoost(int x, int y)
 	{

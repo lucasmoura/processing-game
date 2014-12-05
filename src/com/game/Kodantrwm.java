@@ -21,7 +21,7 @@ public class Kodantrwm extends BasicEnemy
 	@Override
 	protected void setFixedPosition()
 	{
-		int height = Processing.getInstance().getParent().height;
+		int height = Processing.getInstance().getPApplet().height;
 		
 		stopPosition = height/4;
 	}
@@ -41,6 +41,13 @@ public class Kodantrwm extends BasicEnemy
 	@Override
 	protected void willFire()
 	{
+		
+		/*
+		 * Shooting pattern where it start by shooting a bullet that goes in the exactly player position
+		 * and change to a three fast bullet firing pattern. This swap keeps happening until the enemy dies
+		 */
+
+		
 		if(weaponType)
 		{
 			if(fireCounter == 40)

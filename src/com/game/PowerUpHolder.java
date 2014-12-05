@@ -3,7 +3,10 @@ package com.game;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-
+/*
+ * Class used to hold all active power up in the game. This class was designed as singleton to class to
+ * allow that any object could access the power up database thorough a single channel
+ */
 public class PowerUpHolder
 {
 	private static PowerUpHolder instance = null;
@@ -49,6 +52,9 @@ public class PowerUpHolder
 			powerUp.update();
 	}
 	
+	/*
+	 * Draw all active power ups
+	 */
 	public void drawObject()
 	{
 		for(PowerUp powerUp: powerUps)

@@ -2,10 +2,10 @@ package com.game;
 
 import java.util.Random;
 
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 import com.engine.Processing;
 
-public class Kodanruthr extends DestructableObject implements Enemy
+public class Kodanruthr extends CollidableObject implements Enemy
 {
 	private boolean alive;
 	private int height;
@@ -22,7 +22,7 @@ public class Kodanruthr extends DestructableObject implements Enemy
 		startRight = false;
 		alive = true;
 		
-		height = Processing.getInstance().getParent().height;
+		height = Processing.getInstance().getPApplet().height;
 		
 		stopPosition = height/2;
 		

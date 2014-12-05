@@ -2,12 +2,12 @@ package com.game;
 
 import java.util.Random;
 
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 import com.engine.Processing;
 
 import processing.core.PApplet;
 
-public class Asteroid extends DestructableObject implements Enemy
+public class Asteroid extends CollidableObject implements Enemy
 {
 	
 	private boolean alive;
@@ -22,7 +22,7 @@ public class Asteroid extends DestructableObject implements Enemy
 		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
 	
 		Random rand = new Random();
-		PApplet pApplet = Processing.getInstance().getParent();
+		PApplet pApplet = Processing.getInstance().getPApplet();
 		
 		setX(rand.nextInt(pApplet.width));
 		explosion.setX(getX());
@@ -40,7 +40,7 @@ public class Asteroid extends DestructableObject implements Enemy
 	public void move()
 	{
 		this.position.setY(this.position.getY()+speed);
-		PApplet applet = Processing.getInstance().getParent();
+		PApplet applet = Processing.getInstance().getPApplet();
 		
 		if ( position.getY() > applet.displayHeight)
 			alive = false;

@@ -2,8 +2,13 @@ package com.game;
 
 import java.util.ArrayList;
 
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 
+/*
+ * Class used to manage the different bullet pool associated with the enemies. This class was designed with the
+ * singleton pattern to allow that all enemies in the game to use the same class instance. Therefore, this class
+ * is a single access point to all bullet pool associated with enemy bullets
+ */
 public class EnemyBulletControl 
 {
 	
@@ -58,7 +63,7 @@ public class EnemyBulletControl
 		
 	}
 	
-	public ArrayList<DestructableObject> getPool(int bulletType)
+	public ArrayList<CollidableObject> getPool(int bulletType)
 	{
 	
 		if(bulletType == 0)

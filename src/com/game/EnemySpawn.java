@@ -3,19 +3,28 @@ package com.game;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 
+/*
+ * This class is used to spawn enemies in the game
+ */
 public class EnemySpawn 
 {
-	
+	//The timer it requires to spawn another enemy
 	private long enemySpawnCooldown;
+	
+	/*
+	 * The probability associated to deploy the six enemies of the game
+	 */
 	private float asteroidSpawnChance;
 	private float kodancwchSpawnChance;
 	private float kodancyflymSpawnChance;
 	private float kodanruthrSpawnChance;
 	private float kodantrwmSpawnChance;
 	private float kodanswynSpawnChance;
-	private ArrayList<DestructableObject> enemies;
+	
+	//The spawned enemies
+	private ArrayList<CollidableObject> enemies;
 	private Random rand;
 	
 	public EnemySpawn()
@@ -27,11 +36,17 @@ public class EnemySpawn
 		kodanruthrSpawnChance = 310;
 		kodantrwmSpawnChance = 550;
 		kodanswynSpawnChance = 420;
-		enemies = new ArrayList<DestructableObject>();
+		enemies = new ArrayList<CollidableObject>();
 		rand = new Random();
 	}
 	
-	public ArrayList<DestructableObject> spawn(int numEnemies, boolean kodanswynStatus)
+	/*
+	 * Method used to spawn enemies
+	 * @param numEnemies: The number of enemies in the screen
+	 * @param kodanswynStatus: Used to allow that only one kodanswyn enemy can be present on the screen. (Improve)
+	 * @return: An ArrayList containing all spawned enemies
+	 */
+	public ArrayList<CollidableObject> spawn(int numEnemies, boolean kodanswynStatus)
 	{
 		enemies.clear();
 		
@@ -73,7 +88,11 @@ public class EnemySpawn
 	            }
 	            
 	        }
-	        //increase Spawn Time
+	        
+	        /*
+	         * Increase probability of spawning an enemy as the game progress, making it harder as time progress
+	         */
+	        
 	        if (asteroidSpawnChance >= 1.1f) 
 	            asteroidSpawnChance -= 0.005f;
 	        

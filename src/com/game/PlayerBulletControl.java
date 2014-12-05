@@ -1,5 +1,10 @@
 package com.game;
 
+/*
+ * Class used to manage the different bullet pool associated with the player's ship. 
+ * This class was designed with the singleton pattern to allow that the player would have a single access to its
+ * different bullets. Therefore, this class handles the bullet pool for all player weapons, plasma, vulcan and gamma
+ */
 public class PlayerBulletControl 
 {
 	

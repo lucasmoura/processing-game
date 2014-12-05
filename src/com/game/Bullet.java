@@ -1,17 +1,24 @@
 package com.game;
 
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 import com.engine.Processing;
 
-public class Bullet extends DestructableObject
+public class Bullet extends CollidableObject
 {
 	
+	//Variable used to state that the bullet is being used or is inside the screen boundaries
 	private boolean active;
+	//Variable used to check if the bullet is still in the screen boundaries
 	private boolean isInScreen;
+	//Bullet speed
 	private int speed;
+	//Bullet type
 	private int type;
+	//Bullet height
 	private int height;
+	//Bullet movement pattern
 	private int movement;
+	//Bullet angle
 	private double angle;
 	
 	public static final int ENEMY_BULLET = 1;
@@ -27,7 +34,7 @@ public class Bullet extends DestructableObject
 		active = isInScreen = false;
 		this.type = type;
 		speed = 0;
-		height = Processing.getInstance().getParent().displayHeight;
+		height = Processing.getInstance().getPApplet().displayHeight;
 		movement = 0;
 		angle = 0;
 	}
@@ -41,12 +48,15 @@ public class Bullet extends DestructableObject
 	@Override
 	public void update() 
 	{
+		//If a collsion happens, the bullet must be removed
 		if(isColliding())
 		{
 			isInScreen = false;
 			return;
 		}
 		
+		//Update the bullet according to its type
+		//If the bullet is from the player, the bullet must move upwards. else it must move downwards
 		if(type == PLAYER_BULLET)
 			updatePlayerBullet();
 		else
@@ -145,6 +155,9 @@ public class Bullet extends DestructableObject
 	}
 
 
+	/*
+	 * Method used to clear a bullet, reseting all its attributes
+	 */
 	public void clear()
 	{
 		isColliding = false;

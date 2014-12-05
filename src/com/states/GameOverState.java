@@ -50,7 +50,7 @@ public class GameOverState implements GameState
 	@Override
 	public boolean onEnter()
 	{
-		applet = Processing.getInstance().getParent();
+		applet = Processing.getInstance().getPApplet();
 		width = applet.width;
 		height = applet.height;
 		
@@ -108,20 +108,6 @@ public class GameOverState implements GameState
 		newgame.clean();
 		
 		return false;
-	}
-
-	@Override
-	public void enable()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void disable() 
-	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -2,9 +2,14 @@ package com.game;
 
 import java.util.Random;
 
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 import com.engine.Processing;
 
+/*
+ * This class implements the Factory and singleton design pattern to allow a single channel to create an enemy
+ * in the game. It also allows an easer way to expand enemies in the game, since this is the only class that
+ * allows enemy creation, therefore if a new enemy needs to be created, only this class need to be modified
+ */
 public class EnemyFactory 
 {
 	
@@ -23,7 +28,11 @@ public class EnemyFactory
 		
 	}
 	
-	public DestructableObject createEnemy(int enemy)
+	/*
+	 * Method used to create an enemy based on the enemy parameter
+	 * @param enemy: enemy to be created
+	 */
+	public CollidableObject createEnemy(int enemy)
 	{
 		switch(enemy)
 		{
@@ -50,16 +59,21 @@ public class EnemyFactory
 		}
 	}
 	
-	private DestructableObject createAsteroid()
+	/*
+	 * All the downwards classes are just creating one of the six possible enemies in the game
+	 * by instantiating the correct object and setting the appropriate parameters accordingly
+	 */
+	
+	private CollidableObject createAsteroid()
 	{
-		DestructableObject asteroid = new Asteroid(0, 0, 0, 0, "enemies/asteroidsMedium.png",
+		CollidableObject asteroid = new Asteroid(0, 0, 0, 0, "enemies/asteroidsMedium.png",
 				"mediumAsteroid", 16);
 		
 		asteroid.setDamageDealt(30);
 		asteroid.setHealth(30);
 		asteroid.setSpeed(8);
 		
-		int width = Processing.getInstance().getParent().width;
+		int width = Processing.getInstance().getPApplet().width;
 		
 		Random rand = new Random();
 		int asteroidx = rand.nextInt(width - asteroid.getWidth());
@@ -68,9 +82,9 @@ public class EnemyFactory
 		return asteroid;
 	}
 	
-	private DestructableObject createKodancwch()
+	private CollidableObject createKodancwch()
 	{
-		DestructableObject kodancwch = new BasicEnemy(0, 0, 0, 0,
+		CollidableObject kodancwch = new BasicEnemy(0, 0, 0, 0,
 				"enemyBlack1.png", "kodancwch", 1);
 		
 		createBasicEnemy(kodancwch, 10, 8);
@@ -86,9 +100,9 @@ public class EnemyFactory
 		
 	}
 	
-	private DestructableObject createKodanruthr()
+	private CollidableObject createKodanruthr()
 	{
-		DestructableObject kodanruthr = new Kodanruthr(0, 0,
+		CollidableObject kodanruthr = new Kodanruthr(0, 0,
 					"enemies/kodanruthr.png", "kodanruthr", 1);
 		
 		kodanruthr.setDamageDealt(0);
@@ -104,7 +118,7 @@ public class EnemyFactory
 		}	
 		else
 		{
-			enemyx = Processing.getInstance().getParent().width - kodanruthr.getWidth();
+			enemyx = Processing.getInstance().getPApplet().width - kodanruthr.getWidth();
 			((Kodanruthr) kodanruthr).setStart(false);
 		}	
 		
@@ -113,9 +127,9 @@ public class EnemyFactory
 		return kodanruthr;
 	}
 	
-	private DestructableObject createKodancyflym()
+	private CollidableObject createKodancyflym()
 	{
-		DestructableObject kodancyflym = new BasicEnemy(0, 0, 0, 0,
+		CollidableObject kodancyflym = new BasicEnemy(0, 0, 0, 0,
 				"enemies/kodancyflym.png", "kodancyflym", 1);
 		
 		createBasicEnemy(kodancyflym, 50, 12);
@@ -131,9 +145,9 @@ public class EnemyFactory
 		
 	}
 	
-	private DestructableObject createKodantrwm() 
+	private CollidableObject createKodantrwm() 
 	{
-		DestructableObject kodantrwm = new Kodantrwm(0, 0, "enemies/kodantrwm.png",
+		CollidableObject kodantrwm = new Kodantrwm(0, 0, "enemies/kodantrwm.png",
 				"kodantrwm", 1);
 		
 		createBasicEnemy(kodantrwm, 60, 5);
@@ -148,16 +162,16 @@ public class EnemyFactory
 		return kodantrwm;
 	}
 	
-	private DestructableObject createKodanswyn() 
+	private CollidableObject createKodanswyn() 
 	{
-		DestructableObject kodanswyn;
+		CollidableObject kodanswyn;
 		
 		int enemyx = -1;
 		
 		if(new Random().nextInt(2)==0)	
 			enemyx = 0;
 		else
-			enemyx = Processing.getInstance().getParent().width;
+			enemyx = Processing.getInstance().getPApplet().width;
 		
 		
 		
@@ -183,7 +197,7 @@ public class EnemyFactory
 		return kodanswyn;
 	}
 	
-	private void createBasicEnemy(DestructableObject enemy, int health, int speed)
+	private void createBasicEnemy(CollidableObject enemy, int health, int speed)
 	{
 		enemy.setDamageDealt(0);
 		enemy.setHealth(health);
@@ -194,7 +208,7 @@ public class EnemyFactory
 		if(new Random().nextInt(2)==0)
 			enemyx = 0;
 		else
-			enemyx = Processing.getInstance().getParent().width - enemy.getWidth();
+			enemyx = Processing.getInstance().getPApplet().width - enemy.getWidth();
 			
 		
 		enemy.setX(enemyx);

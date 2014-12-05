@@ -4,7 +4,6 @@ import android.view.MotionEvent;
 
 import com.engine.Processing;
 import com.engine.SoundManager;
-import com.engine.TextureManager;
 import com.lonesurvivor.Game;
 
 import processing.core.*;
@@ -19,10 +18,9 @@ public class MainActivity extends PApplet  //PApplet in fact extends android.app
     public void setup() 
     {
     	orientation(LANDSCAPE);
-    	TextureManager.getInstance().setPApplet(this);
-    	Processing.getInstance().setParent(this);
+    	Processing.getInstance().setPApplet(this);
         Game.getInstance().init(this);
-        frameRate(30);
+        frameRate(24);
     }
 
     public void draw() 

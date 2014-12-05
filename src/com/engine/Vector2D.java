@@ -1,5 +1,8 @@
 package com.engine;
 
+/*
+ * Class used to represent a 2D vector
+ */
 public class Vector2D
 {
 	  private int x;

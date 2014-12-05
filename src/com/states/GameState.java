@@ -8,9 +8,6 @@ public interface GameState
 	  public boolean onEnter();
 	  public boolean onExit();
 	  
-	  public void enable();
-	  public void disable();
-	  
 	  public void mouseReleased(int x, int y);
 	  public void mousePressed(int x, int y);
 	  

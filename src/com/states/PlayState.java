@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.engine.Button;
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 import com.engine.GameObject;
 import com.engine.Processing;
 import com.engine.QuadTree;
@@ -30,7 +30,7 @@ public class PlayState implements GameState
 	
 	private Starfield starfield;
 	private ArrayList<GameObject> playObjects;
-	private ArrayList<DestructableObject> enemies;
+	private ArrayList<CollidableObject> enemies;
 	private EnemySpawn spawn;
 	private boolean kodanswynStatus;
 	private final String playID = "PLAY";
@@ -62,9 +62,9 @@ public class PlayState implements GameState
 		handleQuadTree();
 		int score = 0;
 		
-		for (Iterator<DestructableObject> iterator = enemies.iterator(); iterator.hasNext();)
+		for (Iterator<CollidableObject> iterator = enemies.iterator(); iterator.hasNext();)
 		{
-			DestructableObject object = iterator.next();
+			CollidableObject object = iterator.next();
 			
 			if(object instanceof Kodanswyn)
 			{
@@ -127,19 +127,19 @@ public class PlayState implements GameState
 		starfield.drawObject();
 		admiralShip.drawObject();
 		
-		for(DestructableObject enemy: enemies)
+		for(CollidableObject enemy: enemies)
 			enemy.drawObject();
 		
 		for(GameObject object: playObjects)
 			object.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletControl.getInstance().getPool(0))
+		for(CollidableObject bullet: EnemyBulletControl.getInstance().getPool(0))
 			bullet.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletControl.getInstance().getPool(1))
+		for(CollidableObject bullet: EnemyBulletControl.getInstance().getPool(1))
 			bullet.drawObject();
 		
-		for(DestructableObject bullet: EnemyBulletControl.getInstance().getPool(2))
+		for(CollidableObject bullet: EnemyBulletControl.getInstance().getPool(2))
 			bullet.drawObject();
 
 		PowerUpHolder.getInstance().drawObject();
@@ -158,9 +158,9 @@ public class PlayState implements GameState
 	@Override
 	public boolean onEnter() 
 	{
-		applet = Processing.getInstance().getParent();
+		applet = Processing.getInstance().getPApplet();
 		playObjects = new ArrayList<GameObject>();
-		enemies = new ArrayList<DestructableObject>();
+		enemies = new ArrayList<CollidableObject>();
 		spawn = new EnemySpawn();
 		
 		kodanswynStatus = false;
@@ -179,7 +179,7 @@ public class PlayState implements GameState
 		leftButton.setY(lefty);
 		
 		pauseButton = new Button(0, 0, "buttons/pause.png", "pause", 1, false);
-		int pausex = Processing.getInstance().getParent().width - pauseButton.getWidth() - 30;
+		int pausex = Processing.getInstance().getPApplet().width - pauseButton.getWidth() - 30;
 		int pausey = 10;
 		pauseButton.setX(pausex);
 		pauseButton.setY(pausey);
@@ -225,6 +225,7 @@ public class PlayState implements GameState
 		SoundManager.getInstance().addMusic("vulcanshoot", "sound/effect/scifi_laser_gun-001.wav", false);
 		SoundManager.getInstance().addMusic("explosion", "sound/effect/explosion_medium_close-004.wav", false);
 		SoundManager.getInstance().addMusic("enemyshoot", "sound/effect/scifi_laser_gun-003.wav", false);
+		SoundManager.getInstance().addMusic("gravityfield", "sound/effect/scifi_forcefield-002.wav", false);
 	}
 
 	@Override
@@ -234,7 +235,7 @@ public class PlayState implements GameState
 		leftButton.clean();
 		rightButton.clean();
 		
-		for(DestructableObject enemy : enemies)
+		for(CollidableObject enemy : enemies)
 			enemy.clean();
 	
 		PowerUpHolder.getInstance().clean();
@@ -254,14 +255,15 @@ public class PlayState implements GameState
 		SoundManager.getInstance().clearFromSoundManager("powerup", false);
 		SoundManager.getInstance().clearFromSoundManager("explosion", false);
 		SoundManager.getInstance().clearFromSoundManager("enemyshoot", false);
+		SoundManager.getInstance().clearFromSoundManager("gravityfield", false);
 		
 		return true;
 	}
 	
 	private void detectCollision()
 	{
-		ArrayList<DestructableObject> objects = new ArrayList<DestructableObject>();
-		ArrayList<DestructableObject> collision = new ArrayList<DestructableObject>();
+		ArrayList<CollidableObject> objects = new ArrayList<CollidableObject>();
+		ArrayList<CollidableObject> collision = new ArrayList<CollidableObject>();
 		
 		quadTree.getAllObjects(objects);
 		
@@ -304,7 +306,7 @@ public class PlayState implements GameState
 		
 		quadTree.insert(admiralShip);
 		
-		ArrayList<DestructableObject> bullets = admiralShip.getBulletPool().getPool();
+		ArrayList<CollidableObject> bullets = admiralShip.getBulletPool().getPool();
 		bullets.addAll(EnemyBulletControl.getInstance().getPool(0));
 		bullets.addAll(EnemyBulletControl.getInstance().getPool(1));
 		bullets.addAll(EnemyBulletControl.getInstance().getPool(2));
@@ -317,18 +319,6 @@ public class PlayState implements GameState
 		detectCollision();
 	}
 				
-	@Override
-	public void enable() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void disable() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	private void setPowerUpText(int type)
 	{
 		displayPowerUpText = true;

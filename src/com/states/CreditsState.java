@@ -36,20 +36,6 @@ public class CreditsState implements GameState
 	}
 
 	@Override
-	public void enable()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void disable()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void mouseReleased(int x, int y) 
 	{
 		Game.getInstance().getStateMachine().popState();

@@ -1,9 +1,9 @@
 package com.game;
 
-import com.engine.DestructableObject;
+import com.engine.CollidableObject;
 import com.engine.Processing;
 
-public class PowerUp extends DestructableObject
+public class PowerUp extends CollidableObject
 {
 
 	private int height;
@@ -14,7 +14,7 @@ public class PowerUp extends DestructableObject
 	{
 		super(x, y, 0, 0, imagePath, imageId, 1);
 		
-		height = Processing.getInstance().getParent().height - objectHeight;
+		height = Processing.getInstance().getPApplet().height - objectHeight;
 		speed = 10;
 		this.type = type;
 		

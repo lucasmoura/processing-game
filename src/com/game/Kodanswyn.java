@@ -1,5 +1,10 @@
 package com.game;
 
+import com.engine.SoundManager;
+
+/*
+ * Class that implements enemy Kodanswyn. It extends a basic enemy changing the move and fire mechanics of it
+ */
 public class Kodanswyn extends BasicEnemy
 {
 	private int gravitationalFieldPower;
@@ -45,8 +50,12 @@ public class Kodanswyn extends BasicEnemy
 	@Override
 	protected void willFire()
 	{
+		//Start gravitational push only when the enemy has reached its fixed position
 		if(reachedPosition)
+		{
 			gravitationalForce = true;
+			SoundManager.getInstance().playSound("gravityfield", false);
+		}	
 	}
 	
 	@Override
