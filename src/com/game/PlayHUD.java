@@ -54,9 +54,9 @@ public class PlayHUD
 	public void init()
 	{
 		applet = Processing.getInstance().getPApplet();
-		TextureManager.getInstance().loadGameImage("hudBase.png", hudBase);
-		TextureManager.getInstance().loadGameImage("healthIcon.png", healthIcon);
-		TextureManager.getInstance().loadGameImage("score.png", scoreIcon);
+		TextureManager.getInstance().loadGameImage("hud/hudBase.png", hudBase);
+		TextureManager.getInstance().loadGameImage("hud/healthIcon.png", healthIcon);
+		TextureManager.getInstance().loadGameImage("titles/score.png", scoreIcon);
 		
 		playerLifeText = applet.createFont("Arial", 16, false);
 		playerScoreText = applet.createFont("Arial", 16, false);

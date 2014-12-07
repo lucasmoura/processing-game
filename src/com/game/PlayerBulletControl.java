@@ -18,9 +18,9 @@ public class PlayerBulletControl
 		vulcanBullets = new BulletPool(90);
 		gammaBullets = new BulletPool(30);
 		
-		plasmaBullets.init("laserBlue01.png", "laser", 0);
-		vulcanBullets.init("laserRed01.png", "vulcanbullet", 0);
-		gammaBullets.init("gamma.png", "gammabullet", 0);
+		plasmaBullets.init("bullets/laserBlue01.png", "laser", 0);
+		vulcanBullets.init("bullets/laserRed01.png", "vulcanbullet", 0);
+		gammaBullets.init("bullets/gamma.png", "gammabullet", 0);
 	}
 	
 	public void clean()

@@ -66,9 +66,9 @@ public class BasicEnemy extends CollidableObject implements Enemy
 		
 		numberOfTicks = 0;
 		percentFire = 0.05f;
-		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
+		explosion = new Explosion(0, 0, 0, 0, "explosions/explosion.png", "explosion", 17);
 		
-		points = 20;
+		points = 10;
 		
 	}
 	
@@ -280,5 +280,11 @@ public class BasicEnemy extends CollidableObject implements Enemy
 	public void setBulletType(boolean bulletType)
 	{
 		this.bulletType = bulletType;
+	}
+
+	public void setPoints(int points) 
+	{
+		this.points = points;
+		
 	}
 }

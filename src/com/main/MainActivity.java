@@ -4,7 +4,7 @@ import android.view.MotionEvent;
 
 import com.engine.Processing;
 import com.engine.SoundManager;
-import com.lonesurvivor.Game;
+import com.game.Game;
 
 import processing.core.*;
 
@@ -15,27 +15,37 @@ public class MainActivity extends PApplet  //PApplet in fact extends android.app
 	int y;
 	int type;
 	
+
     public void setup() 
     {
+    	//Set the orientation of the screen
     	orientation(LANDSCAPE);
     	Processing.getInstance().setPApplet(this);
-        Game.getInstance().init(this);
-        frameRate(24);
+        Game.getInstance().init();
+        //Set the game frame rate
+        frameRate(30);
     }
 
     public void draw() 
     {
+       //Reset canvas
        background(0);
-       
+     
+       //Handle the game inputs
        if(input == 1)
        {
-    	   Game.getInstance().getStateMachine().handleInput(x, y, type);
+    	   Game.getInstance().handleInput(x, y, type);
     	   input = 0;
        }
        
+       //Game loop that both update and renders the current state
        Game.getInstance().gameLoop();
     }
     
+    /*
+     * Method used to allow the application to handle multitouch events. This was used to allow the
+     * player to change movement pattern while still pressing another movement button
+     */
     @Override
     public boolean surfaceTouchEvent(MotionEvent event)
     {
@@ -45,15 +55,9 @@ public class MainActivity extends PApplet  //PApplet in fact extends android.app
     	y = (int)event.getY(0);
     	  
     	  if(event.getActionMasked() == MotionEvent.ACTION_UP)
-    	  {
     		  type = 0;
-    		  
-    	  }
     	  else
-    	  {
     		  type = 1;
-    	  }
-
     	 
     	  return super.surfaceTouchEvent(event);
     	}
@@ -64,6 +68,9 @@ public class MainActivity extends PApplet  //PApplet in fact extends android.app
     {
     	super.onDestroy();
     	
+    	/*
+    	 * Clean the media player and sound pool associated with the game
+    	 */
     	SoundManager.getInstance().clean();
     }
     
@@ -71,6 +78,7 @@ public class MainActivity extends PApplet  //PApplet in fact extends android.app
     public void onStop()
     {
     	super.onStop();
+    	//Stop the music being played
     	SoundManager.getInstance().stop();
     }
     
@@ -78,22 +86,8 @@ public class MainActivity extends PApplet  //PApplet in fact extends android.app
     public void onRestart()
     {
     	super.onRestart();
+    	//Resumes the music thas was being played when the activity stopped
     	SoundManager.getInstance().resume();
     }
-    
-//    public void mouseReleased()
-//    {
-//    	int x = Processing.getInstance().getParent().mouseX;
-// 	    int y = Processing.getInstance().getParent().mouseY;
-//    	
-//    	Game.getInstance().getStateMachine().handleInput(x, y, 0);
-//    }
-//    
-//    public void mousePressed()
-//    {
-//    	int x = Processing.getInstance().getParent().mouseX;
-// 	    int y = Processing.getInstance().getParent().mouseY;
-//    	
-//    	Game.getInstance().getStateMachine().handleInput(x, y, 1);
-//    }
+
 }

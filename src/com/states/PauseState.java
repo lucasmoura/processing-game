@@ -4,10 +4,14 @@ import processing.core.PApplet;
 
 import com.engine.Button;
 import com.engine.Processing;
+import com.engine.SoundManager;
 import com.engine.TextureManager;
-import com.lonesurvivor.Game;
+import com.game.Game;
 
-
+/*
+ * Class used to represent the pause screen in the game. This state can only be accessed via the play state.
+ * From the pause state, it is possible to move back to the play stateor go to the menu state or settings state.
+ */
 public class PauseState implements GameState
 {	
 	
@@ -49,7 +53,7 @@ public class PauseState implements GameState
 		width = applet.width;
 		height = applet.height;
 		
-		 if(TextureManager.getInstance().loadGameImage("space.jpg", "background") == false)
+		 if(TextureManager.getInstance().loadGameImage("backgrounds/space.jpg", "background") == false)
 		      return false;
 		
 		TextureManager.getInstance().loadGameImage("titles/pausetitle.png", "pausetitle");
@@ -70,15 +74,18 @@ public class PauseState implements GameState
 		int settingsx = width - settings.getWidth();
 		settings.setX(settingsx);
 		
+		SoundManager.getInstance().addMusic("click", "sound/effect/mechanical_metallic_rattle-001.ogg", false);
+		
 		return true;
 	}
 
 	@Override
 	public boolean onExit() 
 	{
-		//SoundManager.getInstance().stop();
 		TextureManager.getInstance().clearFromTextureMap("pausetitle");
 		TextureManager.getInstance().clearFromTextureMap("background");
+		
+		SoundManager.getInstance().clearFromSoundManager("click", false);
 		
 		menu.clean();
 		play.clean();
@@ -92,12 +99,15 @@ public class PauseState implements GameState
 	{
 		if(play.touchOnMe(x, y))
 		{
+			SoundManager.getInstance().playSound("click", false);
 			Game.getInstance().getStateMachine().popState();
 			return;
 		}	
 		
 		if(menu.touchOnMe(x, y))
 		{
+			SoundManager.getInstance().playSound("click", false);
+			//Release both pause state and play state from the state machine
 			Game.getInstance().getStateMachine().popState();
 			Game.getInstance().getStateMachine().popState();
 			Game.getInstance().getStateMachine().changeState(new MenuState());
@@ -105,12 +115,16 @@ public class PauseState implements GameState
 		}
 		
 		if(settings.touchOnMe(x, y))
+		{
+			SoundManager.getInstance().playSound("click", false);
 			Game.getInstance().getStateMachine().pushState(SettingsState.getInstance());
+		}	
 		
 	}
 
 	@Override
-	public void mousePressed(int x, int y) {
+	public void mousePressed(int x, int y)
+	{
 		// TODO Auto-generated method stub
 		
 	}

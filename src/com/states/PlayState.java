@@ -10,21 +10,22 @@ import com.engine.Processing;
 import com.engine.QuadTree;
 import com.engine.SoundManager;
 import com.game.AdmiralShip;
-import com.game.Bullet;
 import com.game.EnemyBulletControl;
-import com.game.EnemyFactory;
 import com.game.EnemySpawn;
+import com.game.Game;
 import com.game.Kodanswyn;
 import com.game.PowerUp;
 import com.game.PowerUpHolder;
 import com.game.Starfield;
 import com.game.Enemy;
 import com.game.PlayHUD;
-import com.lonesurvivor.Game;
 
 import processing.core.PApplet;
 import processing.core.PFont;
 
+/*
+ * Class used to represent the actual game. This state can access the game over state and the pause state.
+ */
 public class PlayState implements GameState
 {
 	
@@ -50,9 +51,11 @@ public class PlayState implements GameState
 	public void update() 
 	{
 		
+		//Update the enemy bullets
 		EnemyBulletControl.getInstance().setPlayerx(admiralShip.getX());
 		EnemyBulletControl.getInstance().setPlayery(admiralShip.getY());
 		
+		//Verify is the player's ship is still alive
 		if(!admiralShip.isAlive())
 		{
 			gameOver();
@@ -62,12 +65,17 @@ public class PlayState implements GameState
 		handleQuadTree();
 		int score = 0;
 		
+		//Update the enemies and remove form the enemies array the ones who left the screen or were destroyed
 		for (Iterator<CollidableObject> iterator = enemies.iterator(); iterator.hasNext();)
 		{
 			CollidableObject object = iterator.next();
 			
 			if(object instanceof Kodanswyn)
 			{
+				/*
+				 * If the enemy is a Kodanswyn, set a gravitational field push on the player's ship
+				 * (Improve, since know playstate know about the existence of one specific enemy)
+				 */
 				if(((Kodanswyn) object).checkGravitationalForce())
 					admiralShip.setGravitationalMovement(((Kodanswyn) object).getGravitationalFieldPower());
 				
@@ -76,7 +84,10 @@ public class PlayState implements GameState
 			
 		    if (!((Enemy) object).isAlive())
 		    {
-		    	
+		    
+		    	/*
+		    	 * Remove gravitational field from the player's ship. (Improve, same problem as above)
+		    	 */
 		    	if(object instanceof Kodanswyn)
 				{
 					if(!((Kodanswyn) object).checkGravitationalForce())
@@ -92,6 +103,7 @@ public class PlayState implements GameState
 		    	object.update();
 		}
 		
+		//If the player gets a power up, display a text indicating the power up type
 		if(displayPowerUpText)
 		{
 			if(powerUpTextCounter>=50)
@@ -105,6 +117,7 @@ public class PlayState implements GameState
 		
 		starfield.update();
 		
+		//Spawn enemies
 		enemies.addAll(spawn.spawn(enemies.size(), kodanswynStatus));
 		
 		if(rightButton.isPressed())
@@ -112,14 +125,21 @@ public class PlayState implements GameState
 		else if(leftButton.isPressed())
 			admiralShip.moveLeft();
 		
+		/*
+		 * Update the player bullets and movement
+		 */
 		EnemyBulletControl.getInstance().update();
 		admiralShip.update();
 		playHUD.update(admiralShip.getHealth(), score);
 		
+		//Update the power ups positions in the screen
 		PowerUpHolder.getInstance().update();
 		
 	}
 
+	/*
+	 * @see com.states.GameState#render()
+	 */
 	@Override
 	public void render() 
 	{
@@ -166,13 +186,13 @@ public class PlayState implements GameState
 		kodanswynStatus = false;
 		
 		starfield = new Starfield(20);
-		rightButton = new Button(0, 0, "rightMove.png", "rightMove", 1, false);
+		rightButton = new Button(0, 0, "buttons/rightMove.png", "rightMove", 1, false);
 		int rightx = applet.width - rightButton.getWidth();
 		int righty = applet.height - rightButton.getHeight();
 		rightButton.setX(rightx);
 		rightButton.setY(righty);
 		
-		leftButton = new Button(0, 0, "leftMove.png", "leftMove", 1, false);
+		leftButton = new Button(0, 0, "buttons/leftMove.png", "leftMove", 1, false);
 		int leftx = 0;
 		int lefty = applet.height - leftButton.getHeight();
 		leftButton.setX(leftx);
@@ -184,7 +204,7 @@ public class PlayState implements GameState
 		pauseButton.setX(pausex);
 		pauseButton.setY(pausey);
 		
-		admiralShip = new AdmiralShip(0, 0, 0, 0, "admiralship.png",
+		admiralShip = new AdmiralShip(0, 0, 0, 0, "player/admiralship.png",
 				"admiralship", 1);
 		int shipx = applet.width/2 - admiralShip.getWidth()/2;
 		int shipy = applet.height - admiralShip.getHeight();
@@ -226,6 +246,8 @@ public class PlayState implements GameState
 		SoundManager.getInstance().addMusic("explosion", "sound/effect/explosion_medium_close-004.wav", false);
 		SoundManager.getInstance().addMusic("enemyshoot", "sound/effect/scifi_laser_gun-003.wav", false);
 		SoundManager.getInstance().addMusic("gravityfield", "sound/effect/scifi_forcefield-002.wav", false);
+		SoundManager.getInstance().addMusic("impact", "sound/effect/impact_hollow_metal_hit-004.wav", false);
+		
 	}
 
 	@Override
@@ -256,10 +278,18 @@ public class PlayState implements GameState
 		SoundManager.getInstance().clearFromSoundManager("explosion", false);
 		SoundManager.getInstance().clearFromSoundManager("enemyshoot", false);
 		SoundManager.getInstance().clearFromSoundManager("gravityfield", false);
+		SoundManager.getInstance().clearFromSoundManager("impact", false);
 		
 		return true;
 	}
 	
+	/*
+	 * Method used to detect collision in the game. It basically gets all the collidable objects associated with
+	 * the current object that collision is being checked on and see if they are actually colliding by verifying if
+	 * the images rectangles are coliding. Using the quadtree, gurantees that the colidable objects are only going to
+	 * be the ones which are on the same quadrant as the object which collision is being checked on
+	 * 
+	 */
 	private void detectCollision()
 	{
 		ArrayList<CollidableObject> objects = new ArrayList<CollidableObject>();
@@ -272,8 +302,6 @@ public class PlayState implements GameState
 			collision.clear();
 			quadTree.retrieve(collision, objects.get(x));
 		
-				
-			
 			for (int y = 0, length = collision.size(); y < length; y++)
 			{
 				
@@ -283,10 +311,18 @@ public class PlayState implements GameState
 					     objects.get(x).getY() < collision.get(y).getY() + collision.get(y).getHeight() &&
 						 objects.get(x).getY() + objects.get(x).getHeight() > collision.get(y).getY()) 
 					{
+						/*
+						 * If the collision is with a power up, the settings must be different, since
+						 * the power up doesn't damage the player, but instead gives him a different
+						 * weapon or boost
+						 */
 						if(collision.get(y) instanceof PowerUp)
 						{
+							//Display power up text on the screen
 							setPowerUpText(((PowerUp) collision.get(y)).getType());
+							//Indicate to the player's ship that it got a power up
 							admiralShip.getPowerUp((PowerUp) collision.get(y));
+							//Remove the power from the holder
 							PowerUpHolder.getInstance().removePowerUp((PowerUp) collision.get(y));
 						}	
 							
@@ -297,6 +333,10 @@ public class PlayState implements GameState
 			}
 	}
 	
+	/*
+	 * Method used to handle the quadtree. It basically clear the previous quadtree and start inserting
+	 * all collidable objects back to the quadtree. Once that is done, collision detection can be started.
+	 */
 	private void handleQuadTree()
 	{
 		quadTree.clear();
@@ -319,6 +359,9 @@ public class PlayState implements GameState
 		detectCollision();
 	}
 				
+	/*
+	 * Method used to select which text will be displayed once the player's ship get a power up
+	 */
 	private void setPowerUpText(int type)
 	{
 		displayPowerUpText = true;
@@ -365,13 +408,25 @@ public class PlayState implements GameState
 			Game.getInstance().getStateMachine().pushState(new PauseState());
 		}
 		
+		/*
+		 * When the player releases a button, guarantee that the space ship movement will stop
+		 * if the player is not pressing any other button
+		 */
 		leftButton.setPressed(false);
 		rightButton.setPressed(false);
 		
+		
 	}
 	
+	/*
+	 * @see com.states.GameState#mousePressed(int, int)
+	 */
 	public void mousePressed(int x, int y)
 	{
+		/*
+		 * If the player is holding the left button, make it that the player's ship movement is constantly to
+		 * the left
+		 */
 		 if(leftButton.touchOnMe(x, y))
 		 {
 				if (leftButton.isPressed()==false) 
@@ -386,6 +441,10 @@ public class PlayState implements GameState
 			 leftButton.setPressed(false);
 		 }
 		
+		 /*
+			 * If the player is holding the right button, make it that the player's ship movement is
+			 * constantly to the right
+			 */
 		 if(rightButton.touchOnMe(x, y))
 		 {
 				if (rightButton.isPressed()==false) 

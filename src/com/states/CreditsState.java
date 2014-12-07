@@ -1,8 +1,12 @@
 package com.states;
 
 import com.engine.TextureManager;
-import com.lonesurvivor.Game;
+import com.game.Game;
 
+/*
+ * Class that represent the credits screen in the game. It basically displays an image showing
+ * the responsible for each part of the game
+ */
 public class CreditsState implements GameState
 {
 	

@@ -12,8 +12,12 @@ import com.engine.GameObject;
 import com.engine.Processing;
 import com.engine.SoundManager;
 import com.engine.TextureManager;
-import com.lonesurvivor.Game;
+import com.game.Game;
 
+/*
+ * Class used to represent the main menu of the game. From this state it is possible to move to the play state,
+ * credit state and settings state.
+ */
 public class MenuState implements GameState 
 {  
 	  private String menuId = "MENU";
@@ -36,7 +40,7 @@ public class MenuState implements GameState
 	  {
 	    int verticalSpace = 200;
 	    
-	    playButton = new Button(0, 0, "play.png", "play", 2, true);
+	    playButton = new Button(0, 0, "buttons/playMenu.png", "play", 2, true);
 	    int playx = applet.width/2 - playButton.getWidth()/2;
 	    int playy = applet.displayHeight/2 + verticalSpace;
 	    playy = playy - playButton.getHeight()/2;
@@ -47,7 +51,7 @@ public class MenuState implements GameState
 	    int settingsy = applet.height - settingsButton.getHeight();
 	    settingsButton.setPosition(settingsx, settingsy);
 	    
-	    creditButton = new Button(0, 0, "credits.png", "credits", 2, true);
+	    creditButton = new Button(0, 0, "buttons/credits.png", "credits", 2, true);
 	    int creditsx = playx;
 	    int creditsy = playy + verticalSpace;
 	    creditButton.setPosition(creditsx, creditsy);
@@ -83,7 +87,7 @@ public class MenuState implements GameState
 	  {
 		 applet = Processing.getInstance().getPApplet();  
 		  
-	    if(TextureManager.getInstance().loadGameImage("space.jpg", "background") == false)
+	    if(TextureManager.getInstance().loadGameImage("backgrounds/space.jpg", "background") == false)
 	      return false;
 	    
 	    TextureManager.getInstance().getImage("background").resize(1980, 1120);
@@ -91,7 +95,7 @@ public class MenuState implements GameState
 	    
 	    TextureManager.getInstance().loadGameImage("titles/bestscoretitle.png", "bestscore");
 	    
-	    if(TextureManager.getInstance().loadGameImage("gametitle.png", "title") == false)
+	    if(TextureManager.getInstance().loadGameImage("titles/gametitle.png", "title") == false)
 	      return false;
 	    
 	    createMenu();
@@ -107,6 +111,9 @@ public class MenuState implements GameState
 	    
 	  }
 	  
+	  /*
+	   * Method used to read the best score so far from the shared preferences file associated with the game
+	   */
 	  private void updateBestScore()
 	  {
 		  SharedPreferences score = Processing.getInstance().getPApplet().getSharedPreferences("score", 0);
@@ -136,16 +143,6 @@ public class MenuState implements GameState
 		 SoundManager.getInstance().clearFromSoundManager("click", false);
 		 
 	     return true;
-	  } 
-	  
-	  public void enable()
-	  {
-	    
-	  } 
-	  
-	  public void disable()
-	  {
-	    
 	  } 
 	  
 	  public String getStateId()

@@ -18,6 +18,7 @@ public class Kodanswyn extends BasicEnemy
 		
 		this.gravitationalFieldPower = gravitationalFieldPower;
 		gravitationalForce = false;
+		points = 30;
 	}
 	
 	

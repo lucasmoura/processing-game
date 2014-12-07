@@ -7,8 +7,17 @@ import com.engine.Button;
 import com.engine.Processing;
 import com.engine.SoundManager;
 import com.engine.TextureManager;
-import com.lonesurvivor.Game;
+import com.game.Game;
 
+/*
+ * Class used to represent the settings state of the game. It allows the user to mute the music and the 
+ * sound effects in the game. This state can only move back to the state that has created it. For example
+ * if the settings state was created by the pause state, it can only move back to the pause state
+ * 
+ * This class was also designed using the singleton design pattern. This was done to guarantee that the state
+ * of the buttons, which state if sound is enable or not, are going to be consistent no matter which state 
+ * create the settings state
+ */
 public class SettingsState implements GameState
 {
 	
@@ -81,7 +90,7 @@ public class SettingsState implements GameState
 		width = applet.width;
 		height = applet.height;
 		
-		TextureManager.getInstance().loadGameImage("space.jpg", "background");
+		TextureManager.getInstance().loadGameImage("backgrounds/space.jpg", "background");
 		TextureManager.getInstance().loadGameImage("titles/settingstitle.png", "settingstitle");
 		TextureManager.getInstance().loadGameImage("hud/audioSettings.png", "audiosettings");
 		
@@ -129,6 +138,7 @@ public class SettingsState implements GameState
 				musicEnable = true;
 			
 			SoundManager.getInstance().setMusicEnable(musicEnable);
+			SoundManager.getInstance().playSound("click", false);
 			
 			return;
 		}
@@ -141,12 +151,14 @@ public class SettingsState implements GameState
 				effectEnable = true;
 			
 			SoundManager.getInstance().setEffectEnable(effectEnable);
+			SoundManager.getInstance().playSound("click", false);
 			
 			return;
 		}
 		
 		if(back.touchOnMe(x, y))
 		{
+			SoundManager.getInstance().playSound("click", false);
 			Game.getInstance().getStateMachine().popState();
 			return;
 		}

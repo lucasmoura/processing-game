@@ -49,7 +49,7 @@ public class AdmiralShip extends CollidableObject
 		speedMovement = 14;
 		
 		alive = true;
-		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
+		explosion = new Explosion(0, 0, 0, 0, "explosions/explosion.png", "explosion", 17);
 		setCollidable("mediumAsteroid");
 		setCollidable("enemyLaser");
 		setCollidable("vulcanweapon");
@@ -95,6 +95,9 @@ public class AdmiralShip extends CollidableObject
 		//If a collision happens, receive damage from object and set health accordingly
 		if(isColliding())
 		{
+			
+			SoundManager.getInstance().playSound("impact", false);
+			
 			health -= damageReceived;
 			isColliding = false;
 			
@@ -339,7 +342,6 @@ public class AdmiralShip extends CollidableObject
 	}
 	
 	/*
-	 * (non-Javadoc)
 	 * @see com.engine.GameObject#clean()
 	 */
 	public void clean()

@@ -96,9 +96,9 @@ public class Button extends GameObject
 	  public void setPressed(boolean value)
 	  {
 		  //Set the current row of the sprite according to the value parameter
-		  if(!value)
+		  if(!value && animate)
 			  currentRow = OUT;
-		  else
+		  else if(animate)
 			  currentRow = CLICKED;
 		  
 		  isPressed = value;

@@ -85,7 +85,7 @@ public class EnemyFactory
 	private CollidableObject createKodancwch()
 	{
 		CollidableObject kodancwch = new BasicEnemy(0, 0, 0, 0,
-				"enemyBlack1.png", "kodancwch", 1);
+				"enemies/enemyBlack1.png", "kodancwch", 1);
 		
 		createBasicEnemy(kodancwch, 10, 8);
 		
@@ -106,8 +106,9 @@ public class EnemyFactory
 					"enemies/kodanruthr.png", "kodanruthr", 1);
 		
 		kodanruthr.setDamageDealt(0);
-		kodanruthr.setHealth(20);
+		kodanruthr.setHealth(25);
 		kodanruthr.setSpeed(30);
+		((Kodanruthr) kodanruthr).setPoints(30);
 		
 		int enemyx = -1;
 		
@@ -132,8 +133,10 @@ public class EnemyFactory
 		CollidableObject kodancyflym = new BasicEnemy(0, 0, 0, 0,
 				"enemies/kodancyflym.png", "kodancyflym", 1);
 		
-		createBasicEnemy(kodancyflym, 50, 12);
+		createBasicEnemy(kodancyflym, 30, 12);
 		
+		
+		((BasicEnemy) kodancyflym).setPoints(20);
 		((BasicEnemy) kodancyflym).setBulletType(true);
 		
 		if(kodancyflym.getX() == 0)

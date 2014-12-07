@@ -30,7 +30,7 @@ public class Kodanruthr extends CollidableObject implements Enemy
 		setCollidable("vulcanbullet");
 		setCollidable("gammabullet");
 		
-		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
+		explosion = new Explosion(0, 0, 0, 0, "explosions/explosion.png", "explosion", 17);
 		
 		numberOfTicks = 0;
 		points = 20;
@@ -134,6 +134,12 @@ public class Kodanruthr extends CollidableObject implements Enemy
 			int type = new Random().nextInt(5);
 			PowerUpFactory.getInstance().createPowerUp(type, getX(), getY());	
 		}
+	}
+
+	public void setPoints(int points) 
+	{
+		this.points = points;
+		
 	}
 
 }

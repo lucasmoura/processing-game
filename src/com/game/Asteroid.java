@@ -19,7 +19,7 @@ public class Asteroid extends CollidableObject implements Enemy
 	{
 		super(x, y, objectWidth, objectHeight, imagePath, imageId, numFrames);
 		
-		explosion = new Explosion(0, 0, 0, 0, "explosion.png", "explosion", 17);
+		explosion = new Explosion(0, 0, 0, 0, "explosions/explosion.png", "explosion", 17);
 	
 		Random rand = new Random();
 		PApplet pApplet = Processing.getInstance().getPApplet();
@@ -33,7 +33,7 @@ public class Asteroid extends CollidableObject implements Enemy
 		alive = true;
 		explode = false;
 		
-		points = 10;
+		points = 5;
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class Kodantrwm extends BasicEnemy
 		
 		weaponType = true;
 		fireCounter = secondFireCounter = 0;
-		
+		points = 50;
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class Kodantrwm extends BasicEnemy
 	{
 		if(weaponType)
 			EnemyBulletControl.getInstance().getChargeShoot(getX()+90, getY()+this.getHeight()-10,
-					15, 10);
+					15, 30);
 		else
 			EnemyBulletControl.getInstance().getThreeBullets(true, getX() +70, getX() + 90,
 						getX()+110, getY()+this.getHeight()-10, 30, 3, 40);

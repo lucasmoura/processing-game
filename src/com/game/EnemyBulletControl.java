@@ -30,10 +30,10 @@ public class EnemyBulletControl
 	private EnemyBulletControl()
 	{
 		enemyBullets = new BulletPool(60);
-		redBullets = new BulletPool(120);
+		redBullets = new BulletPool(130);
 		chargeShoot = new BulletPool(20);
 		
-		enemyBullets.init("laserGreen10.png", "enemyLaser", Bullet.ENEMY_BULLET);
+		enemyBullets.init("bullets/laserGreen10.png", "enemyLaser", Bullet.ENEMY_BULLET);
 		redBullets.init("bullets/laserRed03.png", "redLaser", Bullet.ENEMY_BULLET);
 		chargeShoot.init("bullets/laserRed08.png", "chargeShoot", Bullet.ENEMY_BULLET);
 	}

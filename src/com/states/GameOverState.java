@@ -9,8 +9,12 @@ import com.engine.Button;
 import com.engine.Processing;
 import com.engine.SoundManager;
 import com.engine.TextureManager;
-import com.lonesurvivor.Game;
+import com.game.Game;
 
+/*
+ * Class used to represent the game over screen in the game
+ * It allows the user to begin a new game or go back to the main menu
+ */
 public class GameOverState implements GameState
 {
 	
@@ -54,12 +58,12 @@ public class GameOverState implements GameState
 		width = applet.width;
 		height = applet.height;
 		
-		 if(TextureManager.getInstance().loadGameImage("space.jpg", "background") == false)
+		 if(TextureManager.getInstance().loadGameImage("backgrounds/space.jpg", "background") == false)
 		      return false;
 		
 		gameOverTitle = "gameOverTitle";
-		TextureManager.getInstance().loadGameImage("gameOverTitle.png", gameOverTitle);
-		TextureManager.getInstance().loadGameImage("score.png", "scoreIcon");
+		TextureManager.getInstance().loadGameImage("titles/gameOverTitle.png", gameOverTitle);
+		TextureManager.getInstance().loadGameImage("titles/score.png", "scoreIcon");
 		
 		newgame = new Button(0, 0, "buttons/newgame.png", "newgame", 2, true);
 		int newgamex = width/2 - newgame.getWidth()/2;
@@ -80,6 +84,11 @@ public class GameOverState implements GameState
 		return true;
 	}
 
+	/*
+	 * Class used to save the best score of the player. It open the shared preferences file associated with
+	 * the game and compares the score stored there with the player most recent one. If the most recent score
+	 * is better than the old one, the shared preferences is then updated.
+	 */
 	private void setBestScore()
 	{
 		 SharedPreferences score = applet.getSharedPreferences("score", 0);
